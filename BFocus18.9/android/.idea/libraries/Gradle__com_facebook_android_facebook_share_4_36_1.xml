@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.facebook.android:facebook-share-4.36.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/facebook-share-4.36.1.aar/bc6d756666cd28f94431698d29c6cdc6/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/facebook-share-4.36.1.aar/bc6d756666cd28f94431698d29c6cdc6/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-share/4.36.1/ce703405262e661f199be617d8923d2652d41d07/facebook-share-4.36.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
