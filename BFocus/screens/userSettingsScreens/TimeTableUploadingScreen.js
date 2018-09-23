@@ -6,6 +6,7 @@ import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
 import { showAlert } from '../../components/alert';
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export default class TimeTableUploadingScreen extends Component {
   constructor(props) {
@@ -85,7 +86,7 @@ export default class TimeTableUploadingScreen extends Component {
 						name: res.fileName,   //File name you want to pass
 					})
 						
-				fetch('http://192.168.14.145:3000/TimeTableUpload', {
+				fetch(SERVER_ADDR + 'TimeTableUpload', {
 					method: 'POST',
 					headers: {
 						"id": this.state.id,

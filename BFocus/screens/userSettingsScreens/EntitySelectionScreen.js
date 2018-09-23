@@ -5,6 +5,7 @@ import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
 import { showAlert } from '../../components/alert';
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export default class EntitySelectionScreen extends Component {
    constructor(props) {
@@ -51,7 +52,7 @@ export default class EntitySelectionScreen extends Component {
 
   onSubmit() {
 		var status;
-		url = "http://192.168.14.145:3000/EntitySelection";
+		url = SERVER_ADDR + "EntitySelection";
 		data = {"entity" : this.state.entity, "college": this.state.college};
 
 		fetch(url, {

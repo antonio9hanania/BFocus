@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Alert, AsyncStorage } from 'react-native';
 import NavigationService from './NavigationService';
+import {SERVER_ADDR} from '../constants/serverAddress';
 
 export const loginToServer = (username, email, accessToken, loginPlace, callback) => {
    data = {"username" : username, "email": email, "accessToken": accessToken};
-   url = "http://192.168.14.145:3000/Login";
+   url = SERVER_ADDR + "Login";
     
    try {
     AsyncStorage.setItem('loginPlace', loginPlace);
@@ -17,7 +18,7 @@ export const loginToServer = (username, email, accessToken, loginPlace, callback
 
 export const loginToServerWithPassword = (email, password, callback) => {
    data = {"email" : email, "password" : password};
-   url = "http://192.168.14.145:3000/LoginWithPassword";
+   url = SERVER_ADDR + "LoginWithPassword";
    
    try {
     AsyncStorage.removeItem('loginPlace', '');
@@ -31,7 +32,7 @@ export const loginToServerWithPassword = (email, password, callback) => {
 
 export const signUpToServer = (username, email, password, confirmPassword, callback) => {
    data = {"username" : username, "email" : email, "password" : password, "confirmPassword" : confirmPassword};
-   url = "http://192.168.14.145:3000/SignUp";
+   url = SERVER_ADDR + "SignUp";
   
    sendToServerData(data, url, callback);
 

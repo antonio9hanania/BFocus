@@ -5,6 +5,7 @@ import { Text } from 'react-native-elements';
 import { Path } from 'react-native-svg';
 import * as shape from 'd3-shape';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export default class CourseGroupChartScreen extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ export default class CourseGroupChartScreen extends Component {
 
   getLessonsData(groupPositionIndex, id) {
     var status;
-    url = "http://192.168.14.145:3000/GetLessonsStudentsData";
+    url = SERVER_ADDR + "GetLessonsStudentsData";
 
     fetch(url, {
         headers: {

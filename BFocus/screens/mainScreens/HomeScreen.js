@@ -10,6 +10,7 @@ import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome'
 import {showAlert} from '../../components/alert';
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export const BackgroundTaskHandler = async (data) => {
   console.log('Background task starting...');
@@ -24,7 +25,7 @@ export const BackgroundTaskHandler = async (data) => {
       console.log("Object is: " + JSON.stringify(stateContainer));
       
       var status;
-      url = "http://192.168.14.145:3000/UpdateServer";
+      url = SERVER_ADDR + "UpdateServer";
       //data = {"screenState": stateContainer.screenState, "appState": stateContainer.appState  ,"latitude": stateContainer.latitude, "longitude": stateContainer.longitude};
     
         fetch(url, {
@@ -93,7 +94,11 @@ export default class HomeScreen extends Component {
     if (status === 200) {
       console.log("updating courses groups list.");
       this.setState({ coursesGroups: responseJson.groupsPosition, isLecturer: responseJson.isLecturer });
-
+      if(responseJson.isLecturer === false) {
+        this._eventSubscription1 = ScreenBridge.emitter.addListener('ACTION_USER_PRESENT', ({ ACTION_USER_PRESENT }) => this.screenOnEventHandler());
+        this._eventSubscription2 = ScreenBridge.emitter.addListener('ACTION_SCREEN_OFF', ({ ACTION_SCREEN_OFF }) => this.screenOffEventHandler());
+        AppState.addEventListener('change', this.handleAppStateChange);
+      }
 
       AsyncStorage.multiSet([
         ['coursesGroups', JSON.stringify(responseJson.groupsPosition)],
@@ -107,7 +112,7 @@ export default class HomeScreen extends Component {
   updateCoursesGroups() {
     console.log("Fetching from server courses groups list.");
     var status;
-    url = "http://192.168.14.145:3000/GetCoursesGroupsList";
+    url = SERVER_ADDR + "GetCoursesGroupsList";
 
     fetch(url, {
       headers: {
@@ -159,9 +164,7 @@ export default class HomeScreen extends Component {
 
   async componentDidMount() {
     console.log("->>>>>>> Home Coomponent did mount");
-    this._eventSubscription1 = ScreenBridge.emitter.addListener('ACTION_USER_PRESENT', ({ ACTION_USER_PRESENT }) => this.screenOnEventHandler());
-    this._eventSubscription2 = ScreenBridge.emitter.addListener('ACTION_SCREEN_OFF', ({ ACTION_SCREEN_OFF }) => this.screenOffEventHandler());
-    AppState.addEventListener('change', this.handleAppStateChange);
+    
     Toast.show('Welcome to BFocus...', Toast.SHORT);
 
     try {
@@ -187,9 +190,11 @@ export default class HomeScreen extends Component {
   }
 
   removeEventsListeners() {
-    this._eventSubscription1 && this._eventSubscription1.remove();
-    this._eventSubscription2 && this._eventSubscription2.remove();
-    AppState.removeEventListener('change', this.handleAppStateChange);
+    if(this.state.isLecturer === false) {
+      this._eventSubscription1 && this._eventSubscription1.remove();
+      this._eventSubscription2 && this._eventSubscription2.remove();
+      AppState.removeEventListener('change', this.handleAppStateChange);
+    }
   }
 
   componentWillUnmount() {
@@ -201,7 +206,7 @@ export default class HomeScreen extends Component {
     showAlert("Upload new Time Table", "You will reset your data in the server, are you sure?", () => {
       console.log("Deleting time table from server.");
       var status;
-      url = "http://192.168.14.145:3000/DeleteTimeTable";
+      url = SERVER_ADDR + "DeleteTimeTable";
 
       fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.

@@ -7,7 +7,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Text, FormValidationMessage } from 'react-native-elements';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import {showAlert} from '../../components/alert';
-
+import {SERVER_ADDR} from '../../constants/serverAddress';
 import { Text1} from 'react-native-svg';
 import * as shape from 'd3-shape';
 
@@ -155,7 +155,7 @@ export default class QueryOrSurveyScreen extends Component {
     }
    else { 
     this.setState({groupPositionIndex: this.state.groupPositionIndex - 1 }, () => {
-        this.uploadToServer("http://192.168.14.145:3000/PublishQueryOrSurvey", (status, responseJson) => {
+        this.uploadToServer(SERVER_ADDR + "PublishQueryOrSurvey", (status, responseJson) => {
             console.log("return to function publish");
             if(status === 200) {
                 this.props.navigation.pop(2);
@@ -174,7 +174,7 @@ export default class QueryOrSurveyScreen extends Component {
   uploadAnswerToQueryOrSurvey(index) {
     this.setState({ selectedAnswerIndex: index}, () => {
         console.log("Index chose: " + this.state.selectedAnswerIndex);
-        this.uploadToServer("http://192.168.14.145:3000/UploadAnswerToQueryOrSurvey", (status, responseJson) => {
+        this.uploadToServer(SERVER_ADDR + "UploadAnswerToQueryOrSurvey", (status, responseJson) => {
             this.props.navigation.pop(2);
         });
     });
@@ -186,7 +186,7 @@ export default class QueryOrSurveyScreen extends Component {
 
   delete() {
     showAlert("Delete document", "You will delete this document, are you sure?", () => {
-        this.uploadToServer("http://192.168.14.145:3000/DeleteQueryOrSurvey", (status, responseJson) => {
+        this.uploadToServer(SERVER_ADDR + "DeleteQueryOrSurvey", (status, responseJson) => {
             this.props.navigation.pop(2);
         });
     });

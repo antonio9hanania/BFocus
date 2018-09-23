@@ -3,6 +3,7 @@ import { AsyncStorage, ScrollView, ImageBackground, TouchableOpacity, View, Styl
 import { Text, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Toast from 'react-native-simple-toast';
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export default class QueryOrSurveyUploadScreen extends Component {
    constructor(props) {
@@ -122,7 +123,7 @@ export default class QueryOrSurveyUploadScreen extends Component {
   onSubmit() {
 	    this.setState({ errorMessageQuestion: '', errorMessageAnswer1: '', errorMessageAnswer2: '', errorMessageAnswer3: '', errorMessageAnswer4: '', errorMessageAnswer5: '' });
 		var status;
-		url = "http://192.168.14.145:3000/UploadQueryOrSurvey";
+		url = SERVER_ADDR + "UploadQueryOrSurvey";
 		data = {"editMode": this.state.editMode, "queryOrSurvey": this.state.queryOrSurvey, "coursePositionIndex": this.state.coursePositionIndex, "question" : this.state.question, "answer1": this.state.answer1, "answer2": this.state.answer2, "answer3": this.state.answer3, "answer4": this.state.answer4, "answer5": this.state.answer5};
 
 		fetch(url, {

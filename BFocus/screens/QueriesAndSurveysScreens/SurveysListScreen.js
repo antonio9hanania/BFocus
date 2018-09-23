@@ -4,7 +4,7 @@ import { List, Text, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-simple-toast';
 import PTRView from 'react-native-pull-to-refresh';
-
+import {SERVER_ADDR} from '../../constants/serverAddress';
 
 export default class SurveysListScreen extends Component {
   constructor(props) {
@@ -87,14 +87,14 @@ export default class SurveysListScreen extends Component {
 
   getLecturerCoursesQueriesAndSurveys() {
     console.log("Fetching from server the courses");
-    url = "http://192.168.14.145:3000/GetCoursesQueriesAndSurveysForLecturer";
+    url = SERVER_ADDR + "GetCoursesQueriesAndSurveysForLecturer";
     this.getFromServer(url, this.responseHandlerCourses);
   }
   
   refreshQueriesAndSurveys() {
     console.log("refreshing from the server published courses");
     Toast.show('Refreshing...', Toast.SHORT);
-    url = "http://192.168.14.145:3000/RefreshQueriesAndSurveys";
+    url = SERVER_ADDR + "RefreshQueriesAndSurveys";
     this.getFromServer(url, this.responseHandlerRefresh);
   }
 
