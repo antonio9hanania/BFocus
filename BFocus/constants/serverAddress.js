@@ -1,1 +1,1 @@
-export const SERVER_ADDR = "http://192.168.14.145:3000/";
+export const SERVER_ADDR = "http://vmedu160.mtacloud.co.il:3000/";

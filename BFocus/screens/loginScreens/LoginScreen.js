@@ -285,5 +285,43 @@ export const logout = () => {
 				manager.deauthorize(loginPlace);
 			}
 		}
+		
+		AsyncStorage.clear((error) => {
+			if(error === null) {
+				AsyncStorage.getItem("id", (error, id) => {
+					if(id === undefined ) {
+						console.log("Removed items successfully");
+					}
+					else {
+						console.log("Id failed to remove: " + id);
+					}
+				});
+			}
+			else {
+				console.log("error at remove items from async sotrage: " + error );
+			}
+		});
+		
+		/*// AsyncStorage.multiRemove([
+		// 	["username"],
+		// 	["id"],
+		// 	["accessToken"]
+		// ], (error) => {
+			if(error === undefined) {
+				AsyncStorage.getItem("id", (error, id) => {
+					if(id === undefined ) {
+						console.log("Removed items successfully");
+					}
+					else {
+						console.log("Id failed to remove: " + id);
+					}
+				});
+			}
+			else {
+				console.log("error at remove items from async sotrage: " + error );
+			}
+			
+		// });*/
+
 	});
 }

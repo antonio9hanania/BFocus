@@ -32,7 +32,18 @@ function setCurrentlocation(locationName) {
     AsyncStorage.setItem(lOCATION_NAME_STRING, locationName);
   }
   catch(error) {
-    console.log("Erro at set item current location:" + error);
+    console.log("Error at set item current location:" + error);
+  }
+}
+
+function getCurrentLocation(callback) {
+  try {
+    AsyncStorage.getItem(lOCATION_NAME_STRING, (error, locationName) => {
+        callback(locationName);
+      });
+  }
+  catch(error) {
+    console.log("Error at get item current location:" + error);
   }
 }
 
@@ -66,5 +77,6 @@ export default {
   setTopLevelNavigator,
   navigateFromStart,
   setCurrentlocation,
-  navigateToCurrentLocation
+  navigateToCurrentLocation,
+  getCurrentLocation
 };

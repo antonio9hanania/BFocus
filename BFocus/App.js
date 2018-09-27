@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, AsyncStorage } from 'react-native';
 
 import LoginScreen from './screens/loginScreens/LoginScreen';
 import EmailLoginScreen from './screens/loginScreens/EmailLoginScreen';
@@ -24,11 +24,25 @@ import { BackgroundTaskHandler } from './screens/mainScreens/HomeScreen';
 const notificationActionHandler = async (data) => {
   console.log( '--->NOTIFICATION got to handler:');
   console.log( '--->NOTIFICATION of finished app:');
-	PushNotification.localNotificationSchedule({
-		message: "App closed, We can't track you and to credit you with points. Enter to activate the app.", // (required)
-		date: new Date(Date.now() + (0 * 1000)), // in 60 secs
-	});
-	console.log( '--->NOTIFICATION of finished app executed:');
+
+  AsyncStorage.getItem('isLecturer', (error, isLecturer) => {
+    if(error || isLecturer === "true") {
+      console.log("An error accured during fetching isLecturer variable.");
+   }
+   else {
+      console.log(">>>>>>>>>Student..");
+      NavigationService.getCurrentLocation((location)=> {
+        console.log("current location is: " + location);
+        if(location === "Main") {
+          PushNotification.localNotificationSchedule({
+            message: "App closed, We can't track you and to credit you with points. Enter to activate the app.", // (required)
+            date: new Date(Date.now() + (0 * 1000)), // in 60 secs
+          });
+          console.log( '--->NOTIFICATION of finished app executed:');
+        }
+      });
+   }
+  });
 }
 
 AppRegistry.registerHeadlessTask('NotificationHeadlessTaskName', () => { return notificationActionHandler });

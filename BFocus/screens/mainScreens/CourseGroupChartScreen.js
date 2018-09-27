@@ -98,6 +98,7 @@ export default class CourseGroupChartScreen extends Component {
         console.log(`Fetch Error =\n`, error);
     });
   }
+  
 
     render() {
 
@@ -123,60 +124,9 @@ export default class CourseGroupChartScreen extends Component {
         <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
             <ScrollView resizeMode="center">
             <View style={styles.container}>
-                <Text style={styles.headerGuide} h4> Last lesson students data: </Text>
-                <Text style={styles.header}> {this.state.groupName} </Text> 
-                <Text style={styles.header}> {this.state.startTime}-{this.state.endTime}</Text> 
-                <View style={{ height: 200, padding: 8, flexDirection: 'row', marginLeft: '5%' }}>
-                    <YAxis
-                            data={data}
-                            style={{ marginBottom: xAxisHeight,  }}
-                            contentInset={verticalContentInset}
-                            svg={axesSvg}
-                        />
-                    <View style={{ flex: 1, marginLeft: 3,}}>
-                        <AreaChart
-                            style={styles.chart}
-                            data={ data }
-                            contentInset={{ top: 30, bottom: 30 }}
-                            curve={ shape.curveNatural }
-                            svg={{ fill: 'rgba(134, 65, 244, 0.2)' }}
-                        >
-                            <Grid/>
-                            <Line/>
-                        </AreaChart>
-                        
-                        {this.state.studentsActivityPercentage.length > 0 ? 
-                        <View style={styles.containerDates}> 
-                            {this.state.lessonTimePeriod.map((value, index) => {
-                            return (
-                                <Text key={index} style={styles.dateStyle}>
-                                    {value}
-                                </Text>
-                                );
-                            })
-                            }
-                        </View> : null }
-                        
-                        {/*<XAxis
-                                style={{ marginHorizontal: 0, height: 10, width: 280 }}
-                                data={xDataTimes}
 
-                                //xAccessor={ ({ item }) => item.date }
-                                formatLabel={ (value) => value }
-
-                                contentInset={{ left: 10, right: 10 }}
-                                svg={ {
-                                    rotation: 20,
-                                    originY: 30,
-                                    y: 5, 
-                                    }}
-                                />*/}
-
-                    </View>  
-                </View>
                 
-    
-                <View style={styles.containerTable}>
+            <View style={styles.containerTable}>
                 <Text style={styles.headerGuide} h4> Students Analysis:  {'\n'} </Text> 
                 <Table>
                     <Row data={this.state.tableHead} flexArr={arrSizeOfTable} widthArr={arrWidthTable} style={styles.head} textStyle={styles.text}/>
@@ -186,6 +136,69 @@ export default class CourseGroupChartScreen extends Component {
                     </TableWrapper>
                 </Table>
             </View> 
+
+
+            <Text style={styles.headerGuide} h4> Last lesson students data: </Text>
+            <Text style={styles.header}> {this.state.groupName} </Text> 
+            <Text style={styles.header}> {this.state.startTime}-{this.state.endTime}</Text> 
+            
+            {this.state.studentsActivityPercentage && this.state.studentsActivityPercentage.length > 0 ? 
+            <View style={{ height: 200, padding: 8, flexDirection: 'row', marginLeft: '5%' }}>
+                <YAxis
+                        data={data}
+                        style={{ marginBottom: xAxisHeight,  }}
+                        contentInset={verticalContentInset}
+                        svg={axesSvg}
+                    />
+                <View style={{ flex: 1, marginLeft: 3,}}>
+                    <AreaChart
+                        style={styles.chart}
+                        data={ data }
+                        contentInset={{ top: 30, bottom: 30 }}
+                        curve={ shape.curveNatural }
+                        svg={{ fill: 'rgba(134, 65, 244, 0.2)' }}
+                    >
+                        <Grid/>
+                        <Line/>
+                    </AreaChart>
+                    
+                    
+                    <View style={styles.containerDates}> 
+                        {this.state.lessonTimePeriod.map((value, index) => {
+                        return (
+                            <Text key={index} style={styles.dateStyle}>
+                                {value}
+                            </Text>
+                            );
+                        })
+                        }
+                    </View> 
+                    
+                    {/*<XAxis
+                            style={{ marginHorizontal: 0, height: 10, width: 280 }}
+                            data={xDataTimes}
+
+                            //xAccessor={ ({ item }) => item.date }
+                            formatLabel={ (value) => value }
+
+                            contentInset={{ left: 10, right: 10 }}
+                            svg={ {
+                                rotation: 20,
+                                originY: 30,
+                                y: 5, 
+                                }}
+                            />*/ }
+                            
+                    <Text> {'\n\n'} </Text>
+                            
+                </View>  
+                
+            </View>
+                
+            : 
+            <Text style={styles.textNoData} > There isn't data to show </Text>
+          }
+
 
             </View>
             </ScrollView>
@@ -206,6 +219,10 @@ const styles = StyleSheet.create({
 	height: 200,
     width: 280,
     backgroundColor: 'white',
+  },
+  textNoData: {
+      alignSelf: 'center',
+      color: "black"
   },
   
   dateStyle: {
