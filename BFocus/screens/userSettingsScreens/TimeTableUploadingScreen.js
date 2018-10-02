@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
 import { showAlert } from '../../components/alert';
 import {SERVER_ADDR} from '../../constants/serverAddress';
+import { logout } from '../loginScreens/LoginScreen';
 
 export default class TimeTableUploadingScreen extends Component {
   constructor(props) {
@@ -119,11 +120,14 @@ export default class TimeTableUploadingScreen extends Component {
     });
 	};
 	
-	logout() {
-		showAlert('Logout from user', 'Are you sure you want to logout?', () => {
-			NavigationService.navigate('Login', {});
-		});
-	}
+	logoutAndReturnLoginScreen() {
+    showAlert('Logout from user', 'Are you sure you want to logout?', () => {
+      logout(() => {
+        console.log("Before navigate to login screen...");
+        NavigationService.navigate('Login', {});
+      });
+    });
+  }
 
   render() {
     return (
@@ -132,7 +136,7 @@ export default class TimeTableUploadingScreen extends Component {
 					<View style={styles.container}>
 					
 						<Text id="greetings" style={styles.greetings}> {this.state.greeting} </Text>   
-						<TouchableOpacity onPress={this.logout.bind(this)} style={styles.logoutOpacity} >
+						<TouchableOpacity onPress={this.logoutAndReturnLoginScreen.bind(this)} style={styles.logoutOpacity} >
 											<Icon1 name='logout' size={18} color='black' style={styles.iconButton}/>
 											<Text style={styles.textLogout}> Logout </Text>
 						</TouchableOpacity>

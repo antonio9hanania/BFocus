@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome'
 import {showAlert} from '../../components/alert';
 import {SERVER_ADDR} from '../../constants/serverAddress';
+import PushNotification from 'react-native-push-notification';
 
 export const BackgroundTaskHandler = async (data) => {
   console.log('Background task starting...');
@@ -51,6 +52,30 @@ export const BackgroundTaskHandler = async (data) => {
      }
     }
   });
+}
+
+export const FireBaseCustomNotification = async (data) => {
+  console.log('Firebase custom notification task starting...');
+  var message = 'Text: ' + data.message;
+  console.log("Printing message: " + message);
+
+  if(AppState.currentState === "active") {
+    console.log("Printing toast: ");
+     Toast.show(message, Toast.LONG);
+
+     console.log("Sending push notification: ");
+     PushNotification.localNotificationSchedule({
+       message: message, // (required)
+       date: new Date(Date.now() + (0 * 1000)), // in 60 secs
+      });
+  }
+  else {
+    console.log("Sending push notification: ");
+    PushNotification.localNotificationSchedule({
+      message: message, // (required)
+      date: new Date(Date.now() + (0 * 1000)), // in 60 secs
+    });
+  }
 }
 
 const updateLocation = () =>{
@@ -255,8 +280,10 @@ export default class HomeScreen extends Component {
 
   logoutAndReturnLoginScreen() {
     showAlert('Logout from user', 'Are you sure you want to logout?', () => {
-      logout();
-      NavigationService.navigate('Login', {});
+      logout(() => {
+        console.log("Before navigate to login screen...");
+        NavigationService.navigate('Login', {});
+      });
     });
   }
 

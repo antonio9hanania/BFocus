@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "65257936059",
+    "firebase_url": "https://bfocus-37efa.firebaseio.com",
+    "project_id": "bfocus-37efa",
+    "storage_bucket": "bfocus-37efa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65257936059:android:28d5df8c85eb0175",
+        "android_client_info": {
+          "package_name": "com.bfocus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65257936059-dnc3rq8kt4677jad8rt2pu8nrfvfjqul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv1SpAbWKTrRt7ch4APMu2jmA5RM4pyrY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

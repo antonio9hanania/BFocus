@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BFocus</string>
     <string name="facebook_app_id">236171096934733</string>
+    <string name="fb_login_protocol_scheme">fb{236171096934733}</string>
 </resources>

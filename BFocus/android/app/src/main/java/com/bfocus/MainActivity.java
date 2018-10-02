@@ -28,6 +28,12 @@ public class MainActivity extends ReactActivity{
     }
 
     @Override
+    public void onNewIntent(Intent intent) {
+       super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);

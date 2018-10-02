@@ -6,6 +6,8 @@ import { Path } from 'react-native-svg';
 import * as shape from 'd3-shape';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {SERVER_ADDR} from '../../constants/serverAddress';
+import PTRView from 'react-native-pull-to-refresh';
+import Toast from 'react-native-simple-toast';
 
 export default class CourseGroupChartScreen extends Component {
     constructor(props) {
@@ -15,10 +17,11 @@ export default class CourseGroupChartScreen extends Component {
           groupPositionIndex: '',
           id: '',
           groupName: '',
-          lessonsData: [],
+          graphTextDescirption: '',
           studentsActivityPercentage: [],
           startTime: '',
           endTime: '',
+          dayInWeek: '',
           lessonTimePeriod: [],
           studentsOverallStats: [],
           tableHead: ['#', 'Name', '%', 'Score'],
@@ -59,20 +62,48 @@ export default class CourseGroupChartScreen extends Component {
     return result;
   }
 
+  getDayInWeekFromNumber(dayNumber) {
+    var result = "יום ";
+    switch (dayNumber) {
+        case 0: { result += "א"; break; }
+        case 1: { result += "ב"; break; }
+        case 2: { result += "ג"; break; }
+        case 3: { result += "ד"; break; }
+        case 4: { result += "ה"; break; }
+        case 5: { result += "ו"; break; }
+        case 6: { result += "ש"; break; }
+    }
+    return result + "'";
+}
+
   responseHandler(status, responseJson) {
       if(status === 200) {
-         this.setState({ lessonsData: responseJson.lessonsData,
-             studentsActivityPercentage: responseJson.lessonsData[0].studentsActivityPercentage, 
-             startTime: responseJson.lessonsData[0].dates[0], 
-             endTime: responseJson.lessonsData[0].dates[responseJson.lessonsData[0].dates.length - 1],
-             lessonTimePeriod: responseJson.lessonsData[0].dates,
+        var lesson = responseJson.currOrNextLesson;
+        var graphTextDescirption = responseJson.isLessonInCurrentDay === true ? "Students activity during today's lesson:" : "Next lesson will be at:";
+        var dayInWeek = this.getDayInWeekFromNumber(lesson.dayInWeek);
+
+        this.setState({ 
+             studentsActivityPercentage: lesson.studentsActivityPercentage, 
+             startTime: lesson.dates[0],
+             endTime: lesson.dates[lesson.dates.length - 1],
+             lessonTimePeriod: lesson.dates,
              studentsOverallStats: responseJson.studentsOverallStats,
+             graphTextDescirption: graphTextDescirption,
+             dayInWeek: dayInWeek,
             });
 
          console.log("Updated lessonsData: " + JSON.stringify(this.state.lessonsData));
       } 
   }
 
+  onRefresh = () => {
+    return new Promise((resolve) => {
+      Toast.show('Refreshing...', Toast.SHORT);
+      this.getLessonsData();
+      setTimeout(() => { resolve(); }, 2200)
+    });
+  }
+  
   getLessonsData(groupPositionIndex, id) {
     var status;
     url = SERVER_ADDR + "GetLessonsStudentsData";
@@ -122,6 +153,8 @@ export default class CourseGroupChartScreen extends Component {
 
         return (
         <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+              <PTRView onRefresh={this.onRefresh.bind(this)} >
+
             <ScrollView resizeMode="center">
             <View style={styles.container}>
 
@@ -136,11 +169,12 @@ export default class CourseGroupChartScreen extends Component {
                     </TableWrapper>
                 </Table>
             </View> 
+            
+            <Text> {'\n\n'} </Text>
 
-
-            <Text style={styles.headerGuide} h4> Last lesson students data: </Text>
+            <Text style={styles.headerGuide} h4> {this.state.graphTextDescirption} </Text>
             <Text style={styles.header}> {this.state.groupName} </Text> 
-            <Text style={styles.header}> {this.state.startTime}-{this.state.endTime}</Text> 
+            <Text style={styles.header}> {this.state.dayInWeek} {this.state.startTime}-{this.state.endTime}</Text> 
             
             {this.state.studentsActivityPercentage && this.state.studentsActivityPercentage.length > 0 ? 
             <View style={{ height: 200, padding: 8, flexDirection: 'row', marginLeft: '5%' }}>
@@ -202,6 +236,7 @@ export default class CourseGroupChartScreen extends Component {
 
             </View>
             </ScrollView>
+            </PTRView>
         </ImageBackground>
         )
     }
@@ -212,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 70,
+    
     
   },
   chart: {
@@ -236,7 +271,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   headerGuide: {
-      marginTop: 50,
+      textAlign: 'center',
+      width: 250,
       alignSelf: 'center',
       color: 'black'
   },

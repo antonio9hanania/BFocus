@@ -20,9 +20,13 @@ import OAuthManager from 'react-native-oauth';
 import PushController from '../../components/PushController';
 import { loginToServer, navigateAfterSuccessfullLogin } from '../../components/SendServerLogin';
 import Toast from 'react-native-simple-toast';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import NavigationService from '../../components/NavigationService';
 import { LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
-  
+import {FBLoginManager} from 'react-native-facebook-login';
+	
+GoogleSignin.configure();
+
  const config =  {
   google: {
     callback_url: `com.googleusercontent.apps.1060920161462-i2q3m9burgnpp9snfolk5n1vh82lku17:/google`,
@@ -37,8 +41,8 @@ import { LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fb
 
 const manager = new OAuthManager('BFocus');
 
-type Props = {};
-export default class LoginScreen extends Component<Props> {
+
+export default class LoginScreen extends Component {
 	constructor(props) {
 		super(props);
 		
@@ -90,8 +94,37 @@ export default class LoginScreen extends Component<Props> {
   signInFacebook() { 
 	
 		//LoginManager.logOut();
-		console.log('Sign in to facebook:  ');
-		LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
+		try{
+			console.log('Sign in to facebook:  ');
+			FBLoginManager.loginWithPermissions(["email","public_profile"], function(error, data){
+				if (!error) {
+				  console.log("Login data: ", data);
+				
+				  var profileData = JSON.parse(data.profile);
+				  username= profileData.name;
+				  email = profileData.email;
+				  accessToken= data.credentials.token;
+				
+				  console.log('Data username->' + username);
+				  console.log('Data email->' + email);
+				  console.log('The accessToken: ' + accessToken);
+				
+				  loginToServer(username, email, accessToken, "facebook", handleResponse);
+					
+				} 
+				else if(error.type !== "cancel"){
+				  console.log("Error: ", JSON.stringify(error));
+				  alert("Error: "+ JSON.stringify(error));
+				}	
+		  });
+		}
+		  catch(err){
+			  console.log("An error catched: ", err);
+			  alert("An error catched: " + err);
+		}
+
+
+		/*LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
 			function(result) {
 				if (result.isCancelled) {
 					console.log('Login cancelled');
@@ -118,7 +151,7 @@ export default class LoginScreen extends Component<Props> {
 			function(error) {
 				console.log('Login fail with error: ' + error);
 			}
-		); 
+		); */
 	
 
 	  /*manager.authorize('facebook', {scopes: 'public_profile,email',})
@@ -146,8 +179,33 @@ export default class LoginScreen extends Component<Props> {
 		});*/
   }
   
-  signInGoogle() {
-	  manager.authorize('google', {scopes: 'email'})
+  async signInGoogle() {
+	console.log("Sign with google");
+	
+	try {
+		await GoogleSignin.hasPlayServices();
+		const userInfo = await GoogleSignin.signIn();
+		console.log(JSON.stringify(userInfo));
+
+		username= userInfo.user.name;
+		email = userInfo.user.email;
+		accessToken= userInfo.accessToken;
+
+		console.log('Data username->' + username);
+		console.log('Data email->' + email);
+		console.log('The accessToken: ' + accessToken);
+
+		loginToServer(username, email, accessToken, "google", handleResponse);
+
+	} catch (error) {
+		if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
+			console.log("error occured: " + error);
+			alert("Some error occured while login: " + error);
+		} 
+	}
+	 
+	
+	/*manager.authorize('google', {scopes: 'email'})
 	  .then((resp) => {
 		  if(resp.authorized) {
 			 const googleUrl = 'https://www.googleapis.com/plus/v1/people/me';
@@ -172,7 +230,7 @@ export default class LoginScreen extends Component<Props> {
 	  .catch(err => {
 	    console.log('there was a problem' + err);
 	  	Alert.alert('there was a problem' + err);
-	  });
+	  });*/
   }
   
   signInByMail = () => {
@@ -268,40 +326,45 @@ function handleResponse(status, responseJson) {
 	}   
 }
 
-export const logout = () => {
+export const logout = (callback) => {
 	console.log("got to logout");
 	AsyncStorage.getItem('loginPlace', (err, loginPlace) => {
-		if(err || loginPlace === null) {
+		if(err || loginPlace === null || loginPlace === undefined) {
 			console.log("Not need to deautorize");
+			clearData((callback));
 		}
 		else {
-			console.log("login place is: " + loginPlace);
 			if(loginPlace === "facebook") {
-				console.log("deauthorizing..");
-				LoginManager.logOut();
+				console.log("logout from facebook..");
+				
+				FBLoginManager.logout(function(error, data){
+				  if (error) {
+					console.log(error, data);
+					alert("Error on logout: "+ error );
+				  }
+				  else {
+					console.log("logout from facebook successfully");
+					clearData((callback));
+				  }
+				});
+
 			}
-			else if(loginPlace) {
-				console.log("deauthorizing..");
-				manager.deauthorize(loginPlace);
+			else if(loginPlace === "google") {
+				console.log("logout from " + loginPlace);
+				
+				try {
+					GoogleSignin.revokeAccess().then(() => {
+						console.log("Revoked access of google.");
+						GoogleSignin.signOut().then(() => {
+							console.log("Sign out from google.");
+							clearData((callback));
+						})
+					});
+				} catch (error) {
+					console.error(error);
+				}	  
 			}
 		}
-		
-		AsyncStorage.clear((error) => {
-			if(error === null) {
-				AsyncStorage.getItem("id", (error, id) => {
-					if(id === undefined ) {
-						console.log("Removed items successfully");
-					}
-					else {
-						console.log("Id failed to remove: " + id);
-					}
-				});
-			}
-			else {
-				console.log("error at remove items from async sotrage: " + error );
-			}
-		});
-		
 		/*// AsyncStorage.multiRemove([
 		// 	["username"],
 		// 	["id"],
@@ -324,4 +387,23 @@ export const logout = () => {
 		// });*/
 
 	});
+
+	const clearData = (callback) => {
+		AsyncStorage.clear((error) => {
+			if(error === null) {
+				AsyncStorage.getItem("id", (error, id) => {
+					if(id === null ) {
+						console.log("Removed items successfully");
+						callback();
+					}
+					else {
+						console.log("Id failed to remove: " + id);
+					}
+				});
+			}
+			else {
+				console.log("error at remove items from async sotrage: " + error );
+			}
+		});
+	}	
 }

@@ -21,10 +21,10 @@ export const loginToServerWithPassword = (email, password, callback) => {
    url = SERVER_ADDR + "LoginWithPassword";
    
    try {
-    AsyncStorage.removeItem('loginPlace', '');
+    AsyncStorage.setItem('loginPlace', '');
     console.log("set login place to: " + loginPlace);
   } catch (error) {
-   console.log("Couldn't save place of login");
+   console.log("Couldn't save place of login:", error);
   }
 
    sendToServerData(data, url, callback);
@@ -38,8 +38,8 @@ export const signUpToServer = (username, email, password, confirmPassword, callb
 
 }
 
-const saveDataInApplication = (responseJson) => {
-    AsyncStorage.multiSet([
+const saveDataInApplication = async (responseJson) => {
+    await AsyncStorage.multiSet([
         ["username", responseJson.username],
         ["id", responseJson.id],
         ["accessToken", responseJson.accessToken]
@@ -59,6 +59,8 @@ export const navigateAfterSuccessfullLogin = (responseJson) => {
 }
 
 sendToServerData = (data, url, callback)=> {
+    ///////////////////////////////////////////////////////////////////////////////// HERE
+
 	jsonData = JSON.stringify(data);
 	console.log('Sending to server the data:' + jsonData);
     var status;
@@ -74,11 +76,11 @@ sendToServerData = (data, url, callback)=> {
         status = response.status;
         return response.json()
     })
-	.then((responseJson) => {
+	.then(async (responseJson) => {
         console.log("Response from server: " + status);
         console.log(responseJson);
         if(status === 200) {
-            saveDataInApplication(responseJson);
+            await saveDataInApplication(responseJson);
         }
         callback(status, responseJson);
 	 })

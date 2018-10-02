@@ -18,7 +18,7 @@ import InitialNavigate from './components/InitialNavigate';
 import { createStackNavigator} from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import NavigationService from './components/NavigationService';
-import { BackgroundTaskHandler } from './screens/mainScreens/HomeScreen';
+import { BackgroundTaskHandler, FireBaseCustomNotification } from './screens/mainScreens/HomeScreen';
 
 
 const notificationActionHandler = async (data) => {
@@ -53,6 +53,8 @@ AppRegistry.registerHeadlessTask('NotificationHeadlessTaskName', () => { return 
 }*/
 
 AppRegistry.registerHeadlessTask('BackgroundTask', () => { return BackgroundTaskHandler });
+
+AppRegistry.registerHeadlessTask('FireBaseCustomNotification', () => { return FireBaseCustomNotification });
 
 type Props = {};
 export default class App extends Component<Props> {
