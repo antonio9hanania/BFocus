@@ -20,14 +20,16 @@ import PushNotification from 'react-native-push-notification';
 import NavigationService from './components/NavigationService';
 import { BackgroundTaskHandler, FireBaseCustomNotification } from './screens/mainScreens/HomeScreen';
 
-
 const notificationActionHandler = async (data) => {
   console.log( '--->NOTIFICATION got to handler:');
   console.log( '--->NOTIFICATION of finished app:');
 
   AsyncStorage.getItem('isLecturer', (error, isLecturer) => {
-    if(error || isLecturer === "true") {
-      console.log("An error accured during fetching isLecturer variable.");
+    if(error) {
+      console.log("An error accured during fetching isLecturer variable: " + error);
+   }
+   else if(isLecturer === "true") {
+    console.log("The user is lecturer doesn't need t present notification.");
    }
    else {
       console.log(">>>>>>>>>Student..");

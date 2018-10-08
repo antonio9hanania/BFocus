@@ -29,7 +29,12 @@ export default class MainScreen extends Component {
   }
 
   componentWillMount() {
+    console.log('---!!!!> Main screen Component mounted:');
     NavigationService.setCurrentlocation("Main");
+  }
+
+  componentWillUnmount() {
+    console.log('---!!!!> Main screen Component UNmounted:');
   }
 
   render() {

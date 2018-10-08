@@ -5,6 +5,7 @@ export default class InitialNavigate extends Component {
     componentWillMount() {
         console.log(">>>App component mounted navigating to current location..");
         NavigationService.navigateToCurrentLocation();
+        
     }
 
     render() {

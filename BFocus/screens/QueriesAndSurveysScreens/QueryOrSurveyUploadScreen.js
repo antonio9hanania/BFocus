@@ -145,14 +145,14 @@ export default class QueryOrSurveyUploadScreen extends Component {
 		this.responseHandler(status, responseJson);
 	 })
 	.catch(error => {
-		console.log(`Fetch Error =\n`, error);
+		console.log(`Fetch Error in onSubmit=\n`, error);
 	});
   }
 
   render() {
 
     return (
-	<ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+		<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
 		<ScrollView resizeMode="center">
 		<View style={styles.container}>
 			<Text style={styles.headList} h2> { this.state.isQuery ? "Query" : "Survey" } Upload </Text>
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
    },
     opacity: {
 		flex: 1,
-		backgroundColor: '#778899',
+		backgroundColor: 'rgba(59,89,152,0.6)',
 		alignSelf: 'center',
 		marginTop: 10,
 		height: 40,

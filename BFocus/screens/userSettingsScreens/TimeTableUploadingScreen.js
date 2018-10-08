@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
 import { showAlert } from '../../components/alert';
 import {SERVER_ADDR} from '../../constants/serverAddress';
-import { logout } from '../loginScreens/LoginScreen';
+import {approveLogout} from '../../components/logout';
 
 export default class TimeTableUploadingScreen extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class TimeTableUploadingScreen extends Component {
   }
 	
 	static navigationOptions = ({ navigation }) => ({
-    header: navigation.state.params ? navigation.state.params.header : undefined
+    header: null
 	});
 
   async componentDidMount() {
@@ -53,7 +53,7 @@ export default class TimeTableUploadingScreen extends Component {
 
 
 		if(status === 200) {
-			NavigationService.navigate('Main', {});
+			NavigationService.navigateFromStart('Main', {});
 		}
 }
   
@@ -104,7 +104,7 @@ export default class TimeTableUploadingScreen extends Component {
 					this.responseHandler(status, responseJson);
 				 })
 					.catch(error => {
-						console.log(`Fetch Error =\n`, error);
+						console.log(`Fetch Error in uploadFile =\n`, error);
 					});
 			}
 		});
@@ -121,17 +121,12 @@ export default class TimeTableUploadingScreen extends Component {
 	};
 	
 	logoutAndReturnLoginScreen() {
-    showAlert('Logout from user', 'Are you sure you want to logout?', () => {
-      logout(() => {
-        console.log("Before navigate to login screen...");
-        NavigationService.navigate('Login', {});
-      });
-    });
+    approveLogout(this.state.id);
   }
 
   render() {
     return (
-		<ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+		<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
 			<ScrollView resizeMode="center">
 					<View style={styles.container}>
 					
@@ -182,12 +177,17 @@ const styles = StyleSheet.create({
 		marginTop: -40,
    },
     opacity: {
-			backgroundColor: '#778899',
 			flex: 1,
-			marginTop: -20,
+			backgroundColor: 'rgba(59,89,152,0.6)',
+			
 			height: 40,
-			width: 220,
+			width: '65%',
 			borderRadius: 10,
+			flexDirection: 'row',
+			justifyContent: 'center',
+			paddingTop: 5,
+
+			
   },
    text: {
 		width: 270,
@@ -201,12 +201,7 @@ const styles = StyleSheet.create({
 
 	},
   textLogin: {
-	  fontSize: 20,
-	  textAlign: 'center',
-		
-		marginTop: -30,
-    marginLeft: 25,
-	 
+	  fontSize: 18,	 
 	},
 
 	greetings: {
@@ -216,8 +211,7 @@ const styles = StyleSheet.create({
 		color: 'black'
 	},
 	icon: {
-		marginLeft: 12,
-    marginTop: 10,
+		
 	},
 	textLogout: {
 		fontSize: 14,

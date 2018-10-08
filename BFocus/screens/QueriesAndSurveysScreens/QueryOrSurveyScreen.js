@@ -141,7 +141,7 @@ export default class QueryOrSurveyScreen extends Component {
 		callback(status, responseJson);
 	 })
 	.catch(error => {
-		console.log(`Fetch Error =\n`, error);
+		console.log(`Fetch Error in uploadToServer=\n`, error);
 	});
   }
 
@@ -200,7 +200,7 @@ export default class QueryOrSurveyScreen extends Component {
     
     const color1 = '#B22222';
     const color2 = '#228B22';
-    const color3 = '#87CEFA';
+    const color3 = '#3b5998';
     const color4 = '#F4A460';
     const color5 = '#663399';
 
@@ -243,7 +243,7 @@ export default class QueryOrSurveyScreen extends Component {
     dataCounter = data.map((item, index)=> <Text key={index} style={[styles.textDataCounter ,{color: item.svg.fill}]}> {item.value} </Text> )
 
     return (
-    <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+		<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
         <ScrollView resizeMode="center">
         <View style={styles.container}>
 
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
   opacity: {
     flex: 1,
     alignSelf: 'center',
-    backgroundColor: '#778899',
+    backgroundColor: 'rgba(59,89,152,0.6)',
     marginTop: 10,
     height: 40,
     width: 200,

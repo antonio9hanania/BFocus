@@ -64,7 +64,7 @@
 		51F70EC9809A4BF19AEAB633 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 399674F5BE084085A72B24ED /* SystemConfiguration.framework */; };
 		55672C761F2D45FDB79FCE48 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D2D4851EA54F93AAB878E2 /* AddressBook.framework */; };
 		049EBC6FE26C4877A51A947E /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99158592B2A543C1814C5A6F /* libRCTFBLogin.a */; };
-		6D222AC2BD5347A8BD7CDDD4 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A89B730E71E48779EE06399 /* libRNFIRMessaging.a */; };
+		0FB4A08D7C8A4A3989C3C927 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D237EDAF452B4ACCB6D11EFC /* libRNFIRMessaging.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -405,8 +405,8 @@
 		C7D2D4851EA54F93AAB878E2 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		90A2FF3BCC894DDBB8686C19 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; name = "RCTFBLogin.xcodeproj"; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		99158592B2A543C1814C5A6F /* libRCTFBLogin.a */ = {isa = PBXFileReference; name = "libRCTFBLogin.a"; path = "libRCTFBLogin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		50609ADF8C734E8D845F38A7 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; name = "RNFIRMessaging.xcodeproj"; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		4A89B730E71E48779EE06399 /* libRNFIRMessaging.a */ = {isa = PBXFileReference; name = "libRNFIRMessaging.a"; path = "libRNFIRMessaging.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		E5AE7193288A4CBBA9495318 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; name = "RNFIRMessaging.xcodeproj"; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D237EDAF452B4ACCB6D11EFC /* libRNFIRMessaging.a */ = {isa = PBXFileReference; name = "libRNFIRMessaging.a"; path = "libRNFIRMessaging.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,7 +447,7 @@
 				51F70EC9809A4BF19AEAB633 /* SystemConfiguration.framework in Frameworks */,
 				55672C761F2D45FDB79FCE48 /* AddressBook.framework in Frameworks */,
 				049EBC6FE26C4877A51A947E /* libRCTFBLogin.a in Frameworks */,
-				6D222AC2BD5347A8BD7CDDD4 /* libRNFIRMessaging.a in Frameworks */,
+				0FB4A08D7C8A4A3989C3C927 /* libRNFIRMessaging.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,7 +647,7 @@
 				A104D13D214D4F79BA44E890 /* RCTFBSDK.xcodeproj */,
 				2990BC1FB35E488A9E10EDCC /* RNGoogleSignin.xcodeproj */,
 				90A2FF3BCC894DDBB8686C19 /* RCTFBLogin.xcodeproj */,
-				50609ADF8C734E8D845F38A7 /* RNFIRMessaging.xcodeproj */,
+				E5AE7193288A4CBBA9495318 /* RNFIRMessaging.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1312,8 +1312,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1346,8 +1344,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BFocus.app/BFocus";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
@@ -1450,8 +1446,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1494,8 +1488,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1537,8 +1529,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1579,8 +1569,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (

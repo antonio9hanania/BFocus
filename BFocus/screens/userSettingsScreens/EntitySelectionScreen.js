@@ -4,9 +4,9 @@ import NavigationService from '../../components/NavigationService';
 import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
-import { showAlert } from '../../components/alert';
 import {SERVER_ADDR} from '../../constants/serverAddress';
 import { logout } from '../loginScreens/LoginScreen';
+import {approveLogout} from '../../components/logout';
 
 export default class EntitySelectionScreen extends Component {
    constructor(props) {
@@ -21,7 +21,7 @@ export default class EntitySelectionScreen extends Component {
   }
    
   static navigationOptions = ({ navigation }) => ({
-    header: navigation.state.params ? navigation.state.params.header : undefined
+    header: null
 	});
 
   async componentDidMount() {
@@ -47,7 +47,7 @@ export default class EntitySelectionScreen extends Component {
 		Toast.show(responseJson.message, Toast.LONG);
 
 		if(status === 200) {
-			NavigationService.navigate('TimeTableUploading', {});
+			NavigationService.navigateFromStart('TimeTableUploading', {});
 		}
 }
 
@@ -74,22 +74,17 @@ export default class EntitySelectionScreen extends Component {
 		this.responseHandler(status, responseJson);
 	 })
 		.catch(error => {
-			console.log(`Fetch Error =\n`, error);
+			console.log(`Fetch Error in onSubmit=\n`, error);
 		});
   }
 
 	logoutAndReturnLoginScreen() {
-    showAlert('Logout from user', 'Are you sure you want to logout?', () => {
-      logout(() => {
-        console.log("Before navigate to login screen...");
-        NavigationService.navigate('Login', {});
-      });
-    });
+    approveLogout(this.state.id);
   }
 
   render() {
     return (
-		<ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+		<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
 			<ScrollView resizeMode="center">
 					<View style={styles.container}>
 
@@ -143,11 +138,11 @@ const styles = StyleSheet.create({
    },
     opacity: {
 	    flex: 1,
-		backgroundColor: '#778899',
+		backgroundColor: 'rgba(59,89,152,0.6)',
 		
 		marginTop: 10,
 		height: 40,
-		width: 200,
+		width: '50%',
 		borderRadius: 10,
 		flexDirection: 'row',
 		justifyContent: 'center',

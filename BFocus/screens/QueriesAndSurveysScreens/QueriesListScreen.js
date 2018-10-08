@@ -117,7 +117,7 @@ export default class QueriesListScreen extends Component {
     callback(status, responseJson);
 	 })
 	.catch(error => {
-        console.log(`Fetch Error =\n`, error);
+        console.log(`Fetch Error in getFromServer=\n`, error);
     });
   }
 
@@ -192,7 +192,7 @@ export default class QueriesListScreen extends Component {
 
   render() {
     return (
-    <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>    
+      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
       <PTRView onRefresh={this.onRefresh.bind(this)} >
       <ScrollView resizeMode="center">
           <View style={styles.container}>    
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
 		flex: 1,
-		backgroundColor: '#778899',
+		backgroundColor: 'rgba(59,89,152,0.6)',
 		marginTop: 25,
 		height: 40,
 		width: 150,

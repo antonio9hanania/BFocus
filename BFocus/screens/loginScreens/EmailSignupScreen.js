@@ -19,9 +19,16 @@ export default class EmailSignupScreen extends Component {
     errorMessagePassword: '',
     errorMessageConfirmPassword: '',
     };
+    console.log('EmailSignupScreen comp id is: ',this.state.id);
   }
   
   componentDidMount() {
+    console.log('EmailSignupScreen comp did mount id is: ',this.state.id);
+
+  }
+
+  componentWillUnmount() {
+    console.log(">>>>Sign up email UNmounted");
   }
 
   
@@ -51,16 +58,20 @@ export default class EmailSignupScreen extends Component {
   });
   
   onLogin() {
+    
     const { username, email, password, confirmPassword  } = this.state;
     this.setState({ errorMessageEmail: '', errorMessageUsername: '', errorMessagePassword: '', errorMessageConfirmPassword: '' });
+    console.log('EmailSignupScreen comp onLogin before id is: ',this.state.id);
     
-	  signUpToServer(username, email, password, confirmPassword, this.handleResponse);
+    signUpToServer(username, email, password, confirmPassword, this.handleResponse);
+    console.log('EmailSignupScreen comp onLogin after id is: ',this.state.id);
+    
   }
 
   render() {
     return (
-      <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
-        <ScrollView> 
+      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
+      <ScrollView> 
           <View style={styles.container}>
           <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')}/>
             
@@ -142,11 +153,11 @@ const styles = StyleSheet.create({
   },
   opacity: {
     flex: 1,
-    backgroundColor: '#778899',
-    marginLeft: 20,
+    backgroundColor: 'rgba(59,89,152,0.6)',
+    alignSelf: 'center',
     marginTop: 10,
     height: 40,
-    width: 270,
+    width: '60%',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',

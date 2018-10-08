@@ -16,6 +16,7 @@
     "react-native-facebook-login": "^1.6.1",
     "react-native-fbsdk": "^0.8.0",
     "react-native-fcm": "^16.2.3",
+    "react-native-firebase": "^5.0.0",
     "react-native-google-signin": "^1.0.0-rc6",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-oauth": "^2.2.0",

@@ -28,6 +28,10 @@ export default class EmailLoginScreen extends Component {
     //loginToServerWithPassword("oo@pp.ll", "1234", this.handleResponse); //Student3
     //loginToServerWithPassword("pp@pp.pp", "1234", this.handleResponse); //Student3
   }
+
+  componentWillUnmount() {
+    console.log(">>>>Login email UNmounted");
+  }
   
   handleResponse = ((status, responseJson) =>{
     console.log("Got to response handler.");
@@ -57,8 +61,8 @@ export default class EmailLoginScreen extends Component {
 
   render() {
     return (
-      <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
-        <ScrollView> 
+      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
+      <ScrollView> 
           <View style={styles.container}>
           <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')}/>
             
@@ -116,19 +120,21 @@ const styles = StyleSheet.create({
    },
   text: {
     fontSize: 18,
+    textAlign: 'center'
     
   },
   text1: {
     fontSize: 16,
     marginTop: 4,
+    textAlign: 'center'
   },
   opacity: {
     flex: 1,
-    backgroundColor: '#778899',
-    marginLeft: 20,
+    backgroundColor: 'rgba(59,89,152,0.6)',
+    alignSelf: 'center',
     marginTop: 10,
     height: 40,
-    width: 270,
+    width: '80%',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -143,11 +149,7 @@ const styles = StyleSheet.create({
     color: "black",
    
   },
-  iconButton: {
-    marginLeft: 6,
-   },
-   iconButton: {
-   },
+  
    iconLogin: {
 
    },

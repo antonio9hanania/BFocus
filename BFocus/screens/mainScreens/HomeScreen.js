@@ -6,10 +6,10 @@ import NavigationService from '../../components/NavigationService';
 import { NavigationActions } from 'react-navigation';
 import { logout } from '../loginScreens/LoginScreen';
 import Toast from 'react-native-simple-toast';
-
+import {showAlert} from '../../components/alert';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome'
-import {showAlert} from '../../components/alert';
+import {approveLogout} from '../../components/logout';
 import {SERVER_ADDR} from '../../constants/serverAddress';
 import PushNotification from 'react-native-push-notification';
 
@@ -47,7 +47,7 @@ export const BackgroundTaskHandler = async (data) => {
         
        })
       .catch(error => {
-          console.log(`Fetch Error =\n`, error);
+          console.log(`Fetch Error from background =\n`, error);
       });
      }
     }
@@ -56,23 +56,33 @@ export const BackgroundTaskHandler = async (data) => {
 
 export const FireBaseCustomNotification = async (data) => {
   console.log('Firebase custom notification task starting...');
-  var message = 'Text: ' + data.message;
-  console.log("Printing message: " + message);
+  //var messageObj = {body: data.messageBody, title:data.messageTitle, isLecturer:data.isLecturer} ;
+  var messageObj = {msgBody: data.messageBody, msgTitle: data.messageTitle, msgToastForeground: data.messageToastForeground} ;
+  console.log('msgBody: ',messageObj.msgBody,' title: ', messageObj.msgTitle, ' msgToastForeground: ', messageObj.msgToastForeground);
+  
+  console.log('current app state is: ', AppState.currentState);
 
-  if(AppState.currentState === "active") {
-    console.log("Printing toast: ");
-     Toast.show(message, Toast.LONG);
-
-     console.log("Sending push notification: ");
-     PushNotification.localNotificationSchedule({
-       message: message, // (required)
-       date: new Date(Date.now() + (0 * 1000)), // in 60 secs
+  if(messageObj.msgToastForeground){
+    if(AppState.currentState === "active") {
+      console.log("Printing toast with forgeground enabled: " , messageObj.msgBody);
+      Toast.show(messageObj.msgBody, Toast.SHORT);
+      
+    }
+    else {
+   
+      console.log("Sending push notification with forgeground enabled: ", messageObj.msgBody);
+      PushNotification.localNotificationSchedule({
+        message: messageObj.msgBody, // (required)
+        title:messageObj.msgTitle,
+        date: new Date(Date.now() + (0 * 1000)), // in 60 secs
       });
+    }
   }
-  else {
-    console.log("Sending push notification: ");
+  else{
+    console.log("Sending push notification with forgeground disaabled: ", messageObj.msgBody);
     PushNotification.localNotificationSchedule({
-      message: message, // (required)
+      message: messageObj.msgBody, // (required)
+      title:messageObj.msgTitle,
       date: new Date(Date.now() + (0 * 1000)), // in 60 secs
     });
   }
@@ -138,7 +148,7 @@ export default class HomeScreen extends Component {
     console.log("Fetching from server courses groups list.");
     var status;
     url = SERVER_ADDR + "GetCoursesGroupsList";
-
+    console.log('')
     fetch(url, {
       headers: {
         "id": this.state.id,
@@ -155,7 +165,7 @@ export default class HomeScreen extends Component {
 
       })
       .catch(error => {
-        console.log(`Fetch Error =\n`, error);
+        console.log(`Fetch Error from update courses groups =\n`, error);
       });
   }
 
@@ -222,9 +232,20 @@ export default class HomeScreen extends Component {
     }
   }
 
+  sendPushNotificationIfStudent(isLecturer) {
+    if(isLecturer === false) {
+      console.log("Sending push notification of closing");
+      PushNotification.localNotificationSchedule({
+        message: "App closed, We can't track you and to credit you with points. Enter to activate the app.", // (required)
+        date: new Date(Date.now() + (0 * 1000)), // in 60 secs
+      });
+    }
+  }
+
   componentWillUnmount() {
     this.removeEventsListeners();
     console.log('---> Home screen Component UNmounted:');
+    //this.sendPushNotificationIfStudent(this.state.isLecturer);
   }
 
   onUploadNewTimeTable() {
@@ -232,6 +253,7 @@ export default class HomeScreen extends Component {
       console.log("Deleting time table from server.");
       var status;
       url = SERVER_ADDR + "DeleteTimeTable";
+      console.log('Homescreen comp in onUploadNewTimeTable id is: ', this.state.id)
 
       fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -254,17 +276,18 @@ export default class HomeScreen extends Component {
 
         })
         .catch(error => {
-          console.log(`Fetch Error =\n`, error);
+          console.log(`Fetch Error in onUploadNewTimeTable=\n`, error);
         });
     })
   }
 
   onPressItem = (item) => {
-    console.log("Pressed on item:" + item);
+    console.log('Homescreen comp in onPressItem id is: ', this.state.id);
     this.props.navigation.navigate('CourseGroupChart', { item: item });
   };
 
   renderItemGroupList = ({ item }) => (
+    
     <ListItem
       id={item.id}
       onPress={this.onPressItem.bind(this, item)}
@@ -279,17 +302,14 @@ export default class HomeScreen extends Component {
   }
 
   logoutAndReturnLoginScreen() {
-    showAlert('Logout from user', 'Are you sure you want to logout?', () => {
-      logout(() => {
-        console.log("Before navigate to login screen...");
-        NavigationService.navigate('Login', {});
-      });
-    });
+    console.log('Homescreen comp in logoutAndReturnLoginScreen id is: ', this.state.id)
+    approveLogout(this.state.id);
   }
 
   render() {
+
     return (
-      <ImageBackground source={require('../../img/backgroundPicture.jpg')} style={{flex:1}}>
+      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
       
       <ScrollView resizeMode="center">
         

@@ -17,23 +17,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        System.out.println("From: " + remoteMessage.getFrom());
+        System.out.println("MY Custom msg From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            System.out.println("Message data payload: " + remoteMessage.getData());
 
-            Context context = getApplicationContext();
-            CharSequence text = remoteMessage.getData().get("body");
-            CharSequence text1 = remoteMessage.getData().get("message");
-            System.out.println("Message text1: " + text1);
-
-            int duration = Toast.LENGTH_SHORT;
-            System.out.println("Message body is: " + text);
-
-            Toast toast = Toast.makeText(context, text, duration);
+            String messageBody = remoteMessage.getNotification().getBody();
+            System.out.println("Message body is: " + messageBody);
+            Toast toast = Toast.makeText(getApplicationContext(), messageBody, Toast.LENGTH_SHORT);
             toast.show();
-
         }
 
         // Check if message contains a notification payload.
