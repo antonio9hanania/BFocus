@@ -1,6 +1,7 @@
 var util = require('../util/util.js');
 var constants = require('../constants/constants.js');
 var queriesAndSurveysManager = require('./queriesAndSurveys');
+var fcmNotificationsAdmin = require('./fcmNotifications');
 
 function buildGroupPositionToReturn(groupsPosition) {
     var result = [];
@@ -172,7 +173,7 @@ function updateStudentsAnswerPercentages(group) {
     }
 }
 
-function publishQueryOrSurvey(id, reqHttp, userDataCollection, resHttp) {
+function publishQueryOrSurvey(id, reqHttp, userDataCollection, admin, resHttp) {
     var groupPositionIndex = reqHttp.body.groupPositionIndex;
     var coursePositionIndex = reqHttp.body.coursePositionIndex;
     var isQuery = util.getIsQueryBoolean(reqHttp);
@@ -223,6 +224,8 @@ function publishQueryOrSurvey(id, reqHttp, userDataCollection, resHttp) {
                         group.push(newQueryOrSurveyToPublish);
                         updateStudentsAnswerPercentages(lecturer.groupsPosition[groupPositionIndex].course.groups[groupPositionDesired.groupIndex]);
                         lecturer.groupsPosition[groupPositionIndex].course.save();
+                        fcmNotificationsAdmin.sendNotificationToAllRegisteredStudents(admin, isQuery, lecturer.groupsPosition[groupPositionIndex].course, groupPositionDesired.groupIndex);
+                        
                         result.message = "Successfully published " + (isQuery ? "Query" : "Survey");
                     }
 
@@ -362,11 +365,24 @@ function buildStudentOverallStats(course, innerGroupIndex, callback) {
     });
 }
 
+function returnCurrentOrNextLessonOfGroup(lessons) {
+    var date = new Date();
+
+    for(let i = date.getDay(); i < 7; i=(i+1)% 7) {
+        for(let j = 0; j < lessons.length; j++ ) {
+            if(lessons[j].dayInWeek === i) {
+                return lessons[j];
+            }
+        }
+     
+    }
+}
+
 function getLessonsStudentsData(id, reqHttp, userDataCollection, resHttp) {
     var groupPositionIndex = parseInt(reqHttp.headers.grouppositionindex);
 
     return new Promise(function(resolve, reject) {
-        var result = {"message" : '', "lessonsData": [], "studentsOverallStats": [] };
+        var result = {"message" : '', "studentsOverallStats": [], "currOrNextLesson": '', "isLessonInCurrentDay": false };
             userDataCollection.findById(id, function (err, doc) {
                 if(err || !doc) {
                     resHttp.status(400);
@@ -389,7 +405,9 @@ function getLessonsStudentsData(id, reqHttp, userDataCollection, resHttp) {
                         else {
                             console.log("The user: " + user.username + " has been found, returning students data of lessons.");
                             var group = user.groupsPosition[groupPositionIndex].course.groups[groupPositionDesired.groupIndex]; 
-                            result.lessonsData = group.lessons;
+                            result.currOrNextLesson = returnCurrentOrNextLessonOfGroup(group.lessons);
+                            result.isLessonInCurrentDay  = result.currOrNextLesson.dayInWeek === new Date().getDay();
+
                             buildStudentOverallStats(user.groupsPosition[groupPositionIndex].course, groupPositionDesired.groupIndex, function(error, studentsOverallStats) {
                                 if(error === null) {
                                     result.studentsOverallStats = studentsOverallStats;

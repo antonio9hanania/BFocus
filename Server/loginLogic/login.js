@@ -79,9 +79,30 @@ function createAccessToken() {
     return "1111";
 }
 
-function login(username, email, accessToken, userDataCollection, resHttp) {
+function clearTokenFromOtherUsers(userDataCollection, currentUserEmail, token) {
+    userDataCollection.find({ 'deviceToken': token}, function (err, docs) {
+        if(err) {
+            console.log("An error occurred: " + err);   
+        }
+        else if(docs.length === 0) {
+            console.log("Not need to update any device in the database ");   
+        }
+        else {
+            console.log("Need to clear tokens from devices");  
+            for(let doc of docs) {
+                if(doc.email !== currentUserEmail) {
+                    console.log("Clear the device of user: " + doc.username, " with email: " + doc.email);  
+                    doc.deviceToken = undefined;
+                    doc.save();
+                }
+            }  
+        }   
+    });
+}
+
+function login(username, email, accessToken, deviceToken, userDataCollection, resHttp) {
     return new Promise(function(resolve, reject) {
-        console.log("username: " + username + " email: " + email + " access token:" + accessToken);
+        console.log("username: " + username + " email: " + email + " access token:" + accessToken + "\ndevice token: " + deviceToken);
         var userData;
         var result = {"message" : ''};
 
@@ -97,6 +118,7 @@ function login(username, email, accessToken, userDataCollection, resHttp) {
                         username: username,
                         email: email,
                         accessToken: accessToken,
+                        deviceToken: deviceToken,
                     };
                     userData = new userDataCollection(item);
                 }
@@ -104,10 +126,12 @@ function login(username, email, accessToken, userDataCollection, resHttp) {
                     console.log("The user: " + username + " found in the database, not need to register.");
                     userData = docs[0];
                     userData.accessToken = accessToken;
+                    userData.deviceToken = deviceToken;
                 }
                 userData.save();
                 var message = checkWhichPageToReturn(userData);
                 result = {"message": message, "accessToken": accessToken, "id": userData.id, "username": userData.username};
+                clearTokenFromOtherUsers(userDataCollection, userData.email, userData.deviceToken);
             }
 
             printAllUsersInDataBase(userDataCollection);
@@ -117,9 +141,10 @@ function login(username, email, accessToken, userDataCollection, resHttp) {
     }); 
 }
 
-function loginWithPassword(email, password, userDataCollection, resHttp) {
+function loginWithPassword(email, password, deviceToken, userDataCollection, resHttp) {
     return new Promise(function(resolve, reject) {
-        console.log("email: " + email + "\npassword: " + password);
+        email = email.toLowerCase().trim();
+        console.log("email: " + email + "\npassword: " + password + "\ndevice token: " + deviceToken);
         var result = {"message" : ''};
         var errorMessage = checkValidationLoginData(email, password, resHttp);
 
@@ -138,11 +163,12 @@ function loginWithPassword(email, password, userDataCollection, resHttp) {
                     resHttp.status(402);
                 }
                 else {
-                    printAllUsersInDataBase(userDataCollection);
                     var message = checkWhichPageToReturn(docs[0]);
                     docs[0].accessToken = createAccessToken();
+                    docs[0].deviceToken = deviceToken;
                     docs[0].save();
                     result = {"message": message, "accessToken": docs[0].accessToken, "id": docs[0].id, "username": docs[0].username};
+                    clearTokenFromOtherUsers(userDataCollection, docs[0].email, docs[0].deviceToken);
                 }
                 console.log(result.message);
                 resolve(result);
@@ -156,9 +182,10 @@ function loginWithPassword(email, password, userDataCollection, resHttp) {
     }); 
 }
 
-function signup(username, email, password, confirmPassword, userDataCollection, resHttp) {
+function signup(username, email, password, confirmPassword, deviceToken, userDataCollection, resHttp) {
     return new Promise(function(resolve, reject) {
-        console.log("username: " + username + "\npassword: " + password + "email: " + email + "\nconfirm password: " + confirmPassword);
+        email = email.toLowerCase();
+        console.log("username: " + username + "\npassword: " + password + "email: " + email + "\nconfirm password: " + confirmPassword + "\ndevice token: " + deviceToken);
         var result = {"message" : ''};
         var errorMessage = checkValidationSignupData(username, email, password, confirmPassword, resHttp);
 
@@ -179,6 +206,7 @@ function signup(username, email, password, confirmPassword, userDataCollection, 
                         email: email,
                         password: password,
                         confirmPassword: confirmPassword,
+                        deviceToken: deviceToken,
                         accessToken: createAccessToken(),
                     };
                     var userData = new userDataCollection(item);
@@ -187,6 +215,7 @@ function signup(username, email, password, confirmPassword, userDataCollection, 
                     printAllUsersInDataBase(userDataCollection);
                     var message = "Ok-EntityMissing";
                     result = {"message": message, "accessToken": userData.accessToken, "id": userData.id, "username": userData.username};
+                    clearTokenFromOtherUsers(userDataCollection, userData.email, userData.deviceToken);
                 }
 
                 console.log(result.message );
@@ -201,4 +230,23 @@ function signup(username, email, password, confirmPassword, userDataCollection, 
     }); 
 }
 
-module.exports = { login, loginWithPassword, signup };
+function removeDeviceToken(id, req, userDataCollection, resHttp) {
+    return new Promise(function(resolve, reject) {
+        var result = {"message" : ''};
+
+        userDataCollection.findByIdAndUpdate(id, {deviceToken: undefined }, function (err, doc) {
+            if(err) {
+                resHttp.status(400);
+                result.message = "An error occurred: " + err;
+                resolve(result);
+            }
+            else {
+                console.log("The user: " + doc.username + " has been found, removed the device token successfully.");
+                result.message = "Removed the device token successfully.";
+                resolve(result);
+            }
+        });
+    });
+}
+
+module.exports = { login, loginWithPassword, signup, removeDeviceToken };

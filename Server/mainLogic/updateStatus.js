@@ -106,17 +106,22 @@ function updateServer(id, req, userDataCollection, resHttp) {
             else {
                 console.log("The user: " + doc.username + " has been found, updating server.");
                 doc.lastTimeStampUpdate = new Date();
-                if(checkIfUserInTheRightConditions(appState, screenState) && isUserInClassTime(doc) && isUserInClassPlace(latitude, longitude, doc.college)) {
-                    doc.status = true;
-                    console.log("User status update to true.");
-                }
-                else {
-                    doc.status = false;
-                    console.log("User status update to false.");
-                }
+                try {
+                    if(checkIfUserInTheRightConditions(appState, screenState) && isUserInClassTime(doc) && isUserInClassPlace(latitude, longitude, doc.college)) {
+                        doc.status = true;
+                        console.log("User status update to true.");
+                    }
+                    else {
+                        doc.status = false;
+                        console.log("User status update to false.");
+                    }
 
-                doc.save();
-                result.message = "Updated the server successfully.";
+                    doc.save();
+                    result.message = "Updated the server successfully.";
+                }
+                catch(err) {
+                    reject(err);
+                }
             }
 
             console.log(result.message);
