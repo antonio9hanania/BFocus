@@ -101,7 +101,7 @@ export default class CourseGroupChartScreen extends Component {
     onRefresh = () => {
         return new Promise((resolve) => {
             Toast.show('Refreshing...', Toast.SHORT);
-            this.getLessonsData();
+            this.getLessonsData(this.state.groupPositionIndex,this.state.id);
             setTimeout(() => { resolve(); }, 2200)
         });
     }
@@ -260,20 +260,6 @@ export default class CourseGroupChartScreen extends Component {
                                             }
                                         </View>
 
-                                        {/*<XAxis
-                            style={{ marginHorizontal: 0, height: 10, width: 280 }}
-                            data={xDataTimes}
-
-                            //xAccessor={ ({ item }) => item.date }
-                            formatLabel={ (value) => value }
-
-                            contentInset={{ left: 10, right: 10 }}
-                            svg={ {
-                                rotation: 20,
-                                originY: 30,
-                                y: 5, 
-                                }}
-                            />*/ }
 
                                         <Text> {'\n\n'} </Text>
 
