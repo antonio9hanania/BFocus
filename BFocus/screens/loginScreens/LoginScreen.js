@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
 	StyleSheet,
@@ -82,19 +76,9 @@ export default class LoginScreen extends Component {
 		console.log('---> Login screen Component UNmounted:');
 	}
 
-	/*activateExample =()=> {
-	  ScreenBridge.exampleMethod();
-  };*/
-
-  /* for(var key in resp.provider) {
-			console.log(key + ": " + resp[key]);
-			
-		  }
-		  */
 
 	signInFacebook() {
 
-		//LoginManager.logOut();
 		try {
 			console.log('Sign in to facebook:  ');
 			FBLoginManager.loginWithPermissions(["email", "public_profile"], function (error, data) {
@@ -123,61 +107,6 @@ export default class LoginScreen extends Component {
 			console.log("An error catched: ", err);
 			alert("An error catched: " + err);
 		}
-
-
-		/*LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
-			function(result) {
-				if (result.isCancelled) {
-					console.log('Login cancelled');
-				} else {
-					console.log('Login success with permissions: '	+ result.grantedPermissions.toString());
-
-					new GraphRequestManager().addRequest(new GraphRequest('/me?fields=id,email,name', null,
-					((error, result) => { 
-						if(error) {
-							console.log('an error occured while fetching data');
-						}
-						else {
-							username = result.name;
-							email = result.email;
-							console.log('Data name->', username);
-							console.log('Data email->', email);
-					
-							loginToServer(username, email, "1111", "facebook", handleResponse);		
-						}
-					 }),
-					)).start();	
-				}
-			},
-			function(error) {
-				console.log('Login fail with error: ' + error);
-			}
-		); */
-
-
-	  /*manager.authorize('facebook', {scopes: 'public_profile,email',})
-	  .then((resp) => {
-		  if(resp.authorized) {
-			  manager.makeRequest('facebook', '/me?fields=email,name')
-			   .then(answer => {
-				
-				console.log('Data name->', answer.data.name);
-				console.log('Data email->', answer.data.email);
-				accessToken= resp.response.credentials.accessToken,
-				username = answer.data.name;
-				email = answer.data.email;
-
-			  loginToServer(username, email, accessToken, "facebook", this.handleResponse);
-			  
-				console.log('The accessToken: ' + accessToken);
-				
-			  });
-		    }
-		  })
-	  .catch(err => {
-		   console.log('there was a problem' + err);
-		   Alert.alert('there was a problem' + err);
-		});*/
 	}
 
 	async signInGoogle() {
@@ -204,34 +133,6 @@ export default class LoginScreen extends Component {
 				alert("Some error occured while login: " + error);
 			}
 		}
-
-
-		/*manager.authorize('google', {scopes: 'email'})
-			.then((resp) => {
-				if(resp.authorized) {
-				 const googleUrl = 'https://www.googleapis.com/plus/v1/people/me';
-				 manager.makeRequest('google', googleUrl)
-				 .then(answer => {
-					for(var key in answer) {
-						console.log(key + ": " + answer[key]);
-						
-					}
-					 console.log('Data username->', answer.data.displayName);
-					 console.log('Data email->', answer.data.emails[0].value);
-					 username= answer.data.displayName;
-					 email = answer.data.emails[0].value;
-					 accessToken= resp.response.credentials.accessToken;
-	
-					 loginToServer(username, email, accessToken, "google", handleResponse);
-					 
-					 console.log('The accessToken: ' + accessToken);
-				 }); 
-				}		  
-			})
-			.catch(err => {
-				console.log('there was a problem' + err);
-				Alert.alert('there was a problem' + err);
-			});*/
 	}
 
 	signInByMail = () => {
@@ -244,8 +145,8 @@ export default class LoginScreen extends Component {
 
 	render() {
 		return (
-			<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
-			<ScrollView resizeMode="center">
+			<ImageBackground source={require('../../img/img_background_picture.png')} imageStyle={{ resizeMode: 'cover' }} style={{ flex: 1 }}>
+				<ScrollView resizeMode="center">
 					<View style={styles.container}>
 						<Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')} />
 

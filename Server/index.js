@@ -14,7 +14,6 @@ var admin = require('firebase-admin');
 var serviceAccount = require('./bfocus-37efa-firebase-adminsdk-c6160-b54fee7c9b.json');
 var excellManager = require('./mainLogic/excellTable.js');
 const querystring = require('querystring');
-var fs = require('fs');
 require('./modules/Idea');
 var userDataCollection = mongoose.model('allUsers');
 var courseDataCollection = mongoose.model('allCourses');
@@ -51,8 +50,7 @@ function deleteAllDataBase() {
 }
 
 app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
-    
+    console.log('Example app listening on port 3000!');   
 });
 
 
@@ -89,6 +87,7 @@ app.post('/LoginWithPassword', function (req, res) {
             res.json({ "message": "An error occured: " + err });
         });
 });
+
 
 app.post('/SignUp', function (req, res) {
     console.log('Server got sign up request: ');
@@ -169,6 +168,7 @@ app.post('/RemoveDeviceToken', function (req, res) {
             res.json({ "message": "An error occured: " + err });
         });
 });
+
 
 app.get('/GetCoursesGroupsList', function (req, res) {
     console.log("Got get courses groups List request.");
@@ -276,41 +276,6 @@ app.get('/GetLessonsStudentsData', function (req, res) {
         });
 });
 
-////////////////////////////////////////////////////////////////
-/*app.get('/ExportToExcelFile', function (req, res) {
-    console.log("Got ExportToExcelFile request.");
-    var data = [
-        ['a', 'b', 'c'],
-        ['a', 'e', 'c'],
-        ['d', 'b', 'c']
-    ];
-
-    var workbook = new excel.Workbook();
-    var worksheet = workbook.addWorksheet('Sheet 1');
-
-    data.forEach(function (value1, i) {
-        value1.forEach(function (value2, j) {
-            worksheet.cell(i + 1, j + 1).string(value2);
-        });
-    });
-    workbook.write('Excel.xlsx');
-    var file = './Excel.xlsx';
-    res.download(file);
-});
-app.get('/removeExcelFile', function (req, res) {
-    fs.exists('./Excel.xlsx', (exists) => {
-        if (exists) {
-            fs.unlink('./Excel.xlsx', (err) => {
-
-                console.log('path/file.txt was deleted');
-            });
-        }
-    });
-
-});
-
-*/
-/////////////////////////////////////////////////////////////////////////////////////
 app.get('/DownloadExcelFile', function(req, res) {
     console.log("got DownloadExcelFile request ");
     excellManager.downloadExcelFile(req, res);

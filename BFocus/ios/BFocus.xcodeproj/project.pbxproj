@@ -39,8 +39,6 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		34089679993A47839EE3395F /* libOAuthManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B35101B13D741FF98598CE2 /* libOAuthManager.a */; };
 		33F931D3D0A847E29A4C1E2A /* libRNDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AEFDFD027C34B73B316E455 /* libRNDocumentPicker.a */; };
-		6568ACE12A024A80B0AC24F7 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13C31C82114A468884DFA962 /* libRNSVG.a */; };
-		DAB94780BB394486B4B4F6FD /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019B42C958AA4B1AB38D2207 /* libRNSVG-tvOS.a */; };
 		0853C3D513094C78992FCEC2 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8A49DAA01174374B0E514E7 /* libRNVectorIcons.a */; };
 		FD3677529B9645E9AC0348C6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FD670A363B94DE3A38CFE18 /* Entypo.ttf */; };
 		7796C9D7CD844997B25E8488 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20228F700EFA4F2B968774B1 /* EvilIcons.ttf */; };
@@ -65,6 +63,9 @@
 		55672C761F2D45FDB79FCE48 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D2D4851EA54F93AAB878E2 /* AddressBook.framework */; };
 		049EBC6FE26C4877A51A947E /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99158592B2A543C1814C5A6F /* libRCTFBLogin.a */; };
 		0FB4A08D7C8A4A3989C3C927 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D237EDAF452B4ACCB6D11EFC /* libRNFIRMessaging.a */; };
+		B0AA14D693F6401DBC8F6700 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 311349FCF6F0483F9B39B57C /* libRNFirebase.a */; };
+		5A6783043F4F44FE9E5AA715 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5034E834E39F4D9996EADE44 /* libRNSVG.a */; };
+		C48AF8407886413CA34B5E11 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 320D07D3AAAE4C40994AD344 /* libRNSVG-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -374,9 +375,6 @@
 		4B35101B13D741FF98598CE2 /* libOAuthManager.a */ = {isa = PBXFileReference; name = "libOAuthManager.a"; path = "libOAuthManager.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		7952853E2C0E4B23AFEA328D /* RNDocumentPicker.xcodeproj */ = {isa = PBXFileReference; name = "RNDocumentPicker.xcodeproj"; path = "../node_modules/react-native-document-picker/ios/RNDocumentPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		6AEFDFD027C34B73B316E455 /* libRNDocumentPicker.a */ = {isa = PBXFileReference; name = "libRNDocumentPicker.a"; path = "libRNDocumentPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		BEDCB998F761421E9FDEF91D /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		13C31C82114A468884DFA962 /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		019B42C958AA4B1AB38D2207 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; name = "libRNSVG-tvOS.a"; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		66419D586D204269951DA17D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; name = "RNVectorIcons.xcodeproj"; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		A8A49DAA01174374B0E514E7 /* libRNVectorIcons.a */ = {isa = PBXFileReference; name = "libRNVectorIcons.a"; path = "libRNVectorIcons.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		2FD670A363B94DE3A38CFE18 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -407,6 +405,11 @@
 		99158592B2A543C1814C5A6F /* libRCTFBLogin.a */ = {isa = PBXFileReference; name = "libRCTFBLogin.a"; path = "libRCTFBLogin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		E5AE7193288A4CBBA9495318 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; name = "RNFIRMessaging.xcodeproj"; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		D237EDAF452B4ACCB6D11EFC /* libRNFIRMessaging.a */ = {isa = PBXFileReference; name = "libRNFIRMessaging.a"; path = "libRNFIRMessaging.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		64FAF947605F49B9A5D0812B /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		311349FCF6F0483F9B39B57C /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		350554EE3FAA4042B73A82D7 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		5034E834E39F4D9996EADE44 /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		320D07D3AAAE4C40994AD344 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; name = "libRNSVG-tvOS.a"; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,7 +440,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				34089679993A47839EE3395F /* libOAuthManager.a in Frameworks */,
 				33F931D3D0A847E29A4C1E2A /* libRNDocumentPicker.a in Frameworks */,
-				6568ACE12A024A80B0AC24F7 /* libRNSVG.a in Frameworks */,
 				0853C3D513094C78992FCEC2 /* libRNVectorIcons.a in Frameworks */,
 				E16FA34231D34665A6A06F21 /* libLRDRCTSimpleToast.a in Frameworks */,
 				2E98F713312045E5ACD651FB /* libRCTFBSDK.a in Frameworks */,
@@ -448,6 +450,8 @@
 				55672C761F2D45FDB79FCE48 /* AddressBook.framework in Frameworks */,
 				049EBC6FE26C4877A51A947E /* libRCTFBLogin.a in Frameworks */,
 				0FB4A08D7C8A4A3989C3C927 /* libRNFIRMessaging.a in Frameworks */,
+				B0AA14D693F6401DBC8F6700 /* libRNFirebase.a in Frameworks */,
+				5A6783043F4F44FE9E5AA715 /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +468,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				DAB94780BB394486B4B4F6FD /* libRNSVG-tvOS.a in Frameworks */,
+				C48AF8407886413CA34B5E11 /* libRNSVG-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,13 +646,14 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				297AD5832D564D7FA03CEA76 /* OAuthManager.xcodeproj */,
 				7952853E2C0E4B23AFEA328D /* RNDocumentPicker.xcodeproj */,
-				BEDCB998F761421E9FDEF91D /* RNSVG.xcodeproj */,
 				66419D586D204269951DA17D /* RNVectorIcons.xcodeproj */,
 				19DAAD187C974E6CB22FD51A /* LRDRCTSimpleToast.xcodeproj */,
 				A104D13D214D4F79BA44E890 /* RCTFBSDK.xcodeproj */,
 				2990BC1FB35E488A9E10EDCC /* RNGoogleSignin.xcodeproj */,
 				90A2FF3BCC894DDBB8686C19 /* RCTFBLogin.xcodeproj */,
 				E5AE7193288A4CBBA9495318 /* RNFIRMessaging.xcodeproj */,
+				64FAF947605F49B9A5D0812B /* RNFirebase.xcodeproj */,
+				350554EE3FAA4042B73A82D7 /* RNSVG.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1312,18 +1318,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Debug;
@@ -1345,18 +1354,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Release;
@@ -1380,13 +1392,14 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Debug;
@@ -1409,13 +1422,14 @@
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Release;
@@ -1446,18 +1460,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Debug;
@@ -1488,18 +1505,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Release;
@@ -1529,18 +1549,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Debug;
@@ -1570,18 +1593,21 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-oauth\ios\OAuthManager/**",
 					"$(SRCROOT)\..\node_modules\react-native-document-picker\ios\RNDocumentPicker",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-simple-toast\ios\LRDRCTSimpleToast",
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-fcm\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 			};
 			name = Release;

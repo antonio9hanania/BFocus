@@ -50,13 +50,15 @@ function updateLesson(course, groupIndex, lessonIndex) {
     return new Promise(function (resolve, reject) {
         var date = new Date();
         var lesson = course.groups[groupIndex].lessons[lessonIndex];
-        //  if(lesson.students.length > 0 ) {   
+
         if (lesson.students.length > 0 && date.getDay() === lesson.dayInWeek && util.checkIfTimeIsInTheMinuteOfLesson(date, lesson.dates[0], lesson.dates[lesson.dates.length - 1]) === true) {
             console.log("Lesson found active: " + lesson.lessonName);
             var counterActiveStudents = 0;
             var path = "groups." + groupIndex + ".lessons." + lessonIndex + ".students";
 
             course.populate(path, function (err, courseAfter) {
+                var unactiveStudents = [];
+                var i;
                 if (err) { console.log("Error at update lesson: " + err); resolve(false); }
                 var lessonsStudents = courseAfter.groups[groupIndex].lessons[lessonIndex].students;
 
@@ -65,21 +67,19 @@ function updateLesson(course, groupIndex, lessonIndex) {
                         counterActiveStudents++;
                     }
 
+
                     updateStudentUsageScore(student, courseAfter.groups[groupIndex]);
                 }
 
                 var studentsActivityPercentage = Math.round((counterActiveStudents / lessonsStudents.length) * 100);
-
-                lesson.studentsActivityPercentage.push(studentsActivityPercentage);
-
-                /*//
-                lesson.studentsActivityPercentage.push(10);
-                lesson.studentsActivityPercentage.push(20);
-                lesson.studentsActivityPercentage.push(30);
-                lesson.studentsActivityPercentage.push(20);
-                lesson.studentsActivityPercentage.push(40);
-                //*/
-
+                var precentagePerTime = { utcDateOfActivity: new Date().toUTCString(), studentsActivityPercentage: studentsActivityPercentage }
+                
+                if(lesson.studentsActivityPercentage.length === 0 ){ //to get a starting grow graph from 0 y value
+                    lesson.studentsActivityPercentage.push({ utcDateOfActivity: new Date().toUTCString(), studentsActivityPercentage: 0 })
+                }
+                else{
+                    lesson.studentsActivityPercentage.push(precentagePerTime);
+                }
                 console.log("Pushed to lesson: " + lesson.lessonName + " " + studentsActivityPercentage + " percentage activity of students.");
                 console.log("Pushed to lesson: " + lesson.lessonName + " total of: " + lesson.studentsActivityPercentage.length);
                 resolve(true);

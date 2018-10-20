@@ -148,6 +148,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-svg')
+    compile project(':react-native-google-signin')
+    compile project(':react-native-firebase')
+    compile project(':react-native-fbsdk')
     compile project(':react-native-fcm')
     compile project(':react-native-facebook-login')
     implementation(project(":react-native-google-signin")){
@@ -155,7 +159,6 @@ dependencies {
     }
      implementation 'com.google.android.gms:play-services-auth:16.0.1'
     compile project(':react-native-vector-icons')
-    compile project(':react-native-svg')
     compile project(':react-native-document-picker')
     compile project(':react-native-push-notification')
     compile project(':react-native-oauth')
@@ -184,3 +187,5 @@ ext {
 }
 
 apply plugin: 'com.google.gms.google-services'
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
+

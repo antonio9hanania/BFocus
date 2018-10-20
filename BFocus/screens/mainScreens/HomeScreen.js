@@ -6,50 +6,50 @@ import NavigationService from '../../components/NavigationService';
 import { NavigationActions } from 'react-navigation';
 import { logout } from '../loginScreens/LoginScreen';
 import Toast from 'react-native-simple-toast';
-import {showAlert} from '../../components/alert';
+import { showAlert } from '../../components/alert';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome'
-import {approveLogout} from '../../components/logout';
-import {SERVER_ADDR} from '../../constants/serverAddress';
+import { approveLogout } from '../../components/logout';
+import { SERVER_ADDR } from '../../constants/serverAddress';
 import PushNotification from 'react-native-push-notification';
 
 export const BackgroundTaskHandler = async (data) => {
   console.log('Background task starting...');
   AsyncStorage.getItem('isLecturer', (error, isLecturer) => {
     console.log("IsLecturer value:" + isLecturer);
-     if(error) {
-        console.log("An error accured during fetching isLecturer variable.");
-     }
-     else {
-      if(isLecturer === 'false') {
-      updateLocation();
-      console.log("Object is: " + JSON.stringify(stateContainer));
-      
-      var status;
-      url = SERVER_ADDR + "UpdateServer";
-      //data = {"screenState": stateContainer.screenState, "appState": stateContainer.appState  ,"latitude": stateContainer.latitude, "longitude": stateContainer.longitude};
-    
+    if (error) {
+      console.log("An error accured during fetching isLecturer variable.");
+    }
+    else {
+      if (isLecturer === 'false') {
+        updateLocation();
+        console.log("Object is: " + JSON.stringify(stateContainer));
+
+        var status;
+        url = SERVER_ADDR + "UpdateServer";
+        //data = {"screenState": stateContainer.screenState, "appState": stateContainer.appState  ,"latitude": stateContainer.latitude, "longitude": stateContainer.longitude};
+
         fetch(url, {
-          method: "POST", 
+          method: "POST",
           headers: {
-              "Content-Type": "application/json",
-              "id": stateContainer.id,
+            "Content-Type": "application/json",
+            "id": stateContainer.id,
           },
           body: JSON.stringify(stateContainer), // body data type must match "Content-Type" header
-      })
-      .then((response) => {
-        status = response.status;
-        return response.json();
-      })
-      .then((responseJson) => {
-        console.log("Response from server: " + status);
-        console.log(responseJson);
-        
-       })
-      .catch(error => {
-          console.log(`Fetch Error from background =\n`, error);
-      });
-     }
+        })
+          .then((response) => {
+            status = response.status;
+            return response.json();
+          })
+          .then((responseJson) => {
+            console.log("Response from server: " + status);
+            console.log(responseJson);
+
+          })
+          .catch(error => {
+            console.log(`Fetch Error from background =\n`, error);
+          });
+      }
     }
   });
 }
@@ -57,49 +57,49 @@ export const BackgroundTaskHandler = async (data) => {
 export const FireBaseCustomNotification = async (data) => {
   console.log('Firebase custom notification task starting...');
   //var messageObj = {body: data.messageBody, title:data.messageTitle, isLecturer:data.isLecturer} ;
-  var messageObj = {msgBody: data.messageBody, msgTitle: data.messageTitle, msgToastForeground: data.messageToastForeground} ;
-  console.log('msgBody: ',messageObj.msgBody,' title: ', messageObj.msgTitle, ' msgToastForeground: ', messageObj.msgToastForeground);
-  
+  var messageObj = { msgBody: data.messageBody, msgTitle: data.messageTitle, msgToastForeground: data.messageToastForeground };
+  console.log('msgBody: ', messageObj.msgBody, ' title: ', messageObj.msgTitle, ' msgToastForeground: ', messageObj.msgToastForeground);
+
   console.log('current app state is: ', AppState.currentState);
 
-  if(messageObj.msgToastForeground){
-    if(AppState.currentState === "active") {
-      console.log("Printing toast with forgeground enabled: " , messageObj.msgBody);
+  if (messageObj.msgToastForeground) {
+    if (AppState.currentState === "active") {
+      console.log("Printing toast with forgeground enabled: ", messageObj.msgBody);
       Toast.show(messageObj.msgBody, Toast.SHORT);
-      
+
     }
     else {
-   
+
       console.log("Sending push notification with forgeground enabled: ", messageObj.msgBody);
       PushNotification.localNotificationSchedule({
         message: messageObj.msgBody, // (required)
-        title:messageObj.msgTitle,
+        title: messageObj.msgTitle,
         date: new Date(Date.now() + (0 * 1000)), // in 60 secs
       });
     }
   }
-  else{
+  else {
     console.log("Sending push notification with forgeground disaabled: ", messageObj.msgBody);
     PushNotification.localNotificationSchedule({
       message: messageObj.msgBody, // (required)
-      title:messageObj.msgTitle,
+      title: messageObj.msgTitle,
       date: new Date(Date.now() + (0 * 1000)), // in 60 secs
     });
   }
 }
 
-const updateLocation = () =>{
+const updateLocation = () => {
   navigator.geolocation.getCurrentPosition((position) => {
     stateContainer.latitude = position.coords.latitude;
     stateContainer.longitude = position.coords.longitude;
-   
 
-    }, (error) => console.log("couldn't get location."),
+
+  }, (error) => console.log("couldn't get location."),
     { enableHighAccuracy: false, timeout: 20000, maximumAge: 0 },
   );
 }
 
-var stateContainer = {"id": '', "screenState": '', "appState": ''  ,"latitude": '', "longitude": ''};
+var stateContainer = { "id": '', "screenState": '', "appState": '', "latitude": '', "longitude": '' };
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -122,14 +122,14 @@ export default class HomeScreen extends Component {
   }
 
   static navigationOptions = {
-		header: null
+    header: null
   }
 
   updateGroupList(status, responseJson) {
     if (status === 200) {
       console.log("updating courses groups list.");
       this.setState({ coursesGroups: responseJson.groupsPosition, isLecturer: responseJson.isLecturer });
-      if(responseJson.isLecturer === false) {
+      if (responseJson.isLecturer === false) {
         this._eventSubscription1 = ScreenBridge.emitter.addListener('ACTION_USER_PRESENT', ({ ACTION_USER_PRESENT }) => this.screenOnEventHandler());
         this._eventSubscription2 = ScreenBridge.emitter.addListener('ACTION_SCREEN_OFF', ({ ACTION_SCREEN_OFF }) => this.screenOffEventHandler());
         AppState.addEventListener('change', this.handleAppStateChange);
@@ -143,7 +143,7 @@ export default class HomeScreen extends Component {
       //NavigationService.navigate('QueryOrSurveyUploadScreen', { isQuery: true, coursesGroups: responseJson.groupsPosition });
     }
   }
-  
+
   updateCoursesGroups() {
     console.log("Fetching from server courses groups list.");
     var status;
@@ -199,7 +199,7 @@ export default class HomeScreen extends Component {
 
   async componentDidMount() {
     console.log("->>>>>>> Home Coomponent did mount");
-    
+
     Toast.show('Welcome to BFocus...', Toast.SHORT);
 
     try {
@@ -225,7 +225,7 @@ export default class HomeScreen extends Component {
   }
 
   removeEventsListeners() {
-    if(this.state.isLecturer === false) {
+    if (this.state.isLecturer === false) {
       this._eventSubscription1 && this._eventSubscription1.remove();
       this._eventSubscription2 && this._eventSubscription2.remove();
       AppState.removeEventListener('change', this.handleAppStateChange);
@@ -233,7 +233,7 @@ export default class HomeScreen extends Component {
   }
 
   sendPushNotificationIfStudent(isLecturer) {
-    if(isLecturer === false) {
+    if (isLecturer === false) {
       console.log("Sending push notification of closing");
       PushNotification.localNotificationSchedule({
         message: "App closed, We can't track you and to credit you with points. Enter to activate the app.", // (required)
@@ -269,9 +269,9 @@ export default class HomeScreen extends Component {
           console.log("Response from server: " + status);
           console.log(responseJson);
 
-          if(status === 200) {
+          if (status === 200) {
             Toast.show("Deleted current time table successfully.", Toast.LONG);
-            NavigationService.navigateFromStart('TimeTableUploading', { header: null});
+            NavigationService.navigateFromStart('TimeTableUploading', { header: null });
           }
 
         })
@@ -287,13 +287,13 @@ export default class HomeScreen extends Component {
   };
 
   renderItemGroupList = ({ item }) => (
-    
+
     <ListItem
       id={item.id}
       onPress={this.onPressItem.bind(this, item)}
       title={item.groupName}
-      titleStyle= {{color:'black'}}
-      subtitleStyle= {{color:'black'}}
+      titleStyle={{ color: 'black' }}
+      subtitleStyle={{ color: 'black' }}
     />
   );
 
@@ -309,41 +309,41 @@ export default class HomeScreen extends Component {
   render() {
 
     return (
-      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
-      
-      <ScrollView resizeMode="center">
-        
-        <View style={styles.container}>
-        
-          <Text id="greetings" style={styles.greetings}> {this.state.greeting} </Text>
-          
-          <TouchableOpacity onPress={this.logoutAndReturnLoginScreen.bind(this)} style={styles.logoutOpacity} >
-            <Icon name='logout' size={18} color='black'/>
-            <Text style={styles.textLogout}> Logout </Text>
-          </TouchableOpacity>
+      <ImageBackground source={require('../../img/img_background_picture.png')} imageStyle={{ resizeMode: 'cover' }} style={{ flex: 1 }}>
 
-           <TouchableOpacity onPress={this.onUploadNewTimeTable.bind(this)} style={[styles.logoutOpacity, { height: 40, marginLeft: 10, width: 100, }]} >
-            <Icon1 name='upload' size={18} color='black' style={styles.iconTime}/>
-            <Text style={styles.textNewTimeTable}> Upload a new {"\n"} time table </Text>
-          </TouchableOpacity>
+        <ScrollView resizeMode="center">
 
-          <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')} />
-         
+          <View style={styles.container}>
 
-          {this.state.isLecturer === true ?
-          <List containerStyle={styles.listStyle}>
-            <FlatList
-              data={this.state.coursesGroups}
-              keyExtractor={item => item._id}
-              renderItem={this.renderItemGroupList}
-              ListHeaderComponent={() => this.renderHeader()}
-            />
-          </List> : null }
+            <Text id="greetings" style={styles.greetings}> {this.state.greeting} </Text>
 
-        </View>
-       
-      </ScrollView>
-      
+            <TouchableOpacity onPress={this.logoutAndReturnLoginScreen.bind(this)} style={styles.logoutOpacity} >
+              <Icon name='logout' size={18} color='black' />
+              <Text style={styles.textLogout}> Logout </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this.onUploadNewTimeTable.bind(this)} style={[styles.logoutOpacity, { height: 40, marginLeft: 10, width: 100, }]} >
+              <Icon1 name='upload' size={18} color='black' style={styles.iconTime} />
+              <Text style={styles.textNewTimeTable}> Upload a new {"\n"} time table </Text>
+            </TouchableOpacity>
+
+            <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')} />
+
+
+            {this.state.isLecturer === true ?
+              <List containerStyle={styles.listStyle}>
+                <FlatList
+                  data={this.state.coursesGroups}
+                  keyExtractor={item => item._id}
+                  renderItem={this.renderItemGroupList}
+                  ListHeaderComponent={() => this.renderHeader()}
+                />
+              </List> : null}
+
+          </View>
+
+        </ScrollView>
+
       </ImageBackground>
 
     );
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-		paddingTop: 5,
+    paddingTop: 5,
   },
   iconTime: {
     marginLeft: 5,
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'black',
   },
-  listStyle:{
+  listStyle: {
     marginTop: -40,
     alignSelf: 'center',
     justifyContent: 'center',

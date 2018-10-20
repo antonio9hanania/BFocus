@@ -151,15 +151,7 @@ function returnLessonIfExists(lesson, allLessons) {
         if(lessonToCheck.lecturerName === lesson.E  && lessonToCheck.dayInWeek === getNumberwdayInWeek(lesson.F) && lessonToCheck.dates[0] === lesson.G && lessonToCheck.dates[lessonToCheck.dates.length -1] === lesson.H) {
             return lessonToCheck;
         }
-        /*if(lessonToCheck.lecturerName === lesson.E) {
-            if(lessonToCheck.dayInWeek === getNumberwdayInWeek(lesson.F)){
-                if(lessonToCheck.dates[0] === lesson.G) {
-                    if(lessonToCheck.dates[lessonToCheck.dates.length -1] === lesson.H) {
-                        console.log("aa");
-                    }
-                }
-            }
-        }*/
+        
     }
 
     return null;
@@ -302,14 +294,7 @@ function buildQueriesAndSurveysForCourses(groupsPosition) {
 }
 
 function addStudentToGroupStats(lessonInDb, group) {
-    /*var studentOverallStatsSchema = new Schema({
-    studentAnswerPercentage:{ type: Number},
-    studentLackUsageScore: { type: Number},
 
-    totalScoresAddedCounter: { type: Number, default: 0 },
-    totalScoresSum: { type: Number, default: 0 },
-    totalQuestionsAnsweredCounter: { type: Number, default: 0 },
-    */
    if(lessonInDb.id === group.lessons[0].id) {
        studentOverallStats = {'studentAnswerPercentage': 0, 'studentLackUsageScore': 0, 'totalScoresAddedCounter': 0, 'totalScoresSum': 0, 'totalQuestionsAnsweredCounter': 0 };
        group.studentsOverallStats.push(studentOverallStats);
@@ -509,6 +494,7 @@ function deleteTimeTableFromUser(id, userDataCollection, courseDataCollection, r
                             .then((response) => {
                                 doc.timeTable = undefined;
                                 doc.groupsPosition = undefined;
+                                doc.status = false; 
                                 doc.save();
                                 result.message = "Deleted the time table successfully.";
                                 console.log(result.message);

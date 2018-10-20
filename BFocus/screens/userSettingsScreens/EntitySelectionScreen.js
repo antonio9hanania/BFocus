@@ -4,32 +4,32 @@ import NavigationService from '../../components/NavigationService';
 import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons';
-import {SERVER_ADDR} from '../../constants/serverAddress';
+import { SERVER_ADDR } from '../../constants/serverAddress';
 import { logout } from '../loginScreens/LoginScreen';
-import {approveLogout} from '../../components/logout';
+import { approveLogout } from '../../components/logout';
 
 export default class EntitySelectionScreen extends Component {
-   constructor(props) {
+	constructor(props) {
 		super(props);
 		this.state = {
-				entity : 'Student',
-				college: 'MTA - Academic Tel Aviv college',
-				greeting : '',
-				id: '',
-				username: '',
-			};
-  }
-   
-  static navigationOptions = ({ navigation }) => ({
-    header: null
+			entity: 'Student',
+			college: 'MTA - Academic Tel Aviv college',
+			greeting: '',
+			id: '',
+			username: '',
+		};
+	}
+
+	static navigationOptions = ({ navigation }) => ({
+		header: null
 	});
 
-  async componentDidMount() {
+	async componentDidMount() {
 		try {
 			NavigationService.setCurrentlocation("Entity");
 			const username = await AsyncStorage.getItem('username');
 			const id = await AsyncStorage.getItem('id');
-	
+
 			console.log("Username is: " + username + ", Id is: " + id);
 			this.setState({
 				username: username,
@@ -37,109 +37,109 @@ export default class EntitySelectionScreen extends Component {
 				id: id,
 			});
 		}
-		catch(error) {
+		catch (error) {
 			console.log("An error occured: " + error);
 		}
-	
-  }
-	
-	responseHandler(status, responseJson){
+
+	}
+
+	responseHandler(status, responseJson) {
 		Toast.show(responseJson.message, Toast.LONG);
 
-		if(status === 200) {
+		if (status === 200) {
 			NavigationService.navigateFromStart('TimeTableUploading', {});
 		}
-}
+	}
 
-  onSubmit() {
+	onSubmit() {
 		var status;
 		url = SERVER_ADDR + "EntitySelection";
-		data = {"entity" : this.state.entity, "college": this.state.college};
+		data = { "entity": this.state.entity, "college": this.state.college };
 
 		fetch(url, {
 			method: "POST", // *GET, POST, PUT, DELETE, etc.
 			headers: {
-					"Content-Type": "application/json",
-					"id": this.state.id,
+				"Content-Type": "application/json",
+				"id": this.state.id,
 			},
 			body: JSON.stringify(data), // body data type must match "Content-Type" header
-	})
-	.then((response) => {
-		status = response.status;
-		return response.json()
-	})
-	.then((responseJson) => {
-		console.log("Response from server: " + status);
-		console.log(responseJson);
-		this.responseHandler(status, responseJson);
-	 })
-		.catch(error => {
-			console.log(`Fetch Error in onSubmit=\n`, error);
-		});
-  }
+		})
+			.then((response) => {
+				status = response.status;
+				return response.json()
+			})
+			.then((responseJson) => {
+				console.log("Response from server: " + status);
+				console.log(responseJson);
+				this.responseHandler(status, responseJson);
+			})
+			.catch(error => {
+				console.log(`Fetch Error in onSubmit=\n`, error);
+			});
+	}
 
 	logoutAndReturnLoginScreen() {
-    approveLogout(this.state.id);
-  }
+		approveLogout(this.state.id);
+	}
 
-  render() {
-    return (
-		<ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
-			<ScrollView resizeMode="center">
+	render() {
+		return (
+			<ImageBackground source={require('../../img/img_background_picture.png')} imageStyle={{ resizeMode: 'cover' }} style={{ flex: 1 }}>
+				<ScrollView resizeMode="center">
 					<View style={styles.container}>
 
-					<Text id="greetings" style={styles.greetings}> {this.state.greeting} </Text>   
-					<TouchableOpacity onPress={this.logoutAndReturnLoginScreen.bind(this)} style={styles.logoutOpacity} >
-						<Icon1 name='logout' size={18} color='black' style={styles.iconButton}/>
-						<Text style={styles.textLogout}> Logout </Text>
-					</TouchableOpacity>
+						<Text id="greetings" style={styles.greetings}> {this.state.greeting} </Text>
+						<TouchableOpacity onPress={this.logoutAndReturnLoginScreen.bind(this)} style={styles.logoutOpacity} >
+							<Icon1 name='logout' size={18} color='black' style={styles.iconButton} />
+							<Text style={styles.textLogout}> Logout </Text>
+						</TouchableOpacity>
 
-						<Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')}/>
+						<Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')} />
 
-					<Picker style={styles.picker}
-						selectedValue={this.state.college}
-						onValueChange={(itemValue, itemIndex) => this.setState({college: itemValue})}>
-						<Picker.Item label="MTA - Academic Tel Aviv college" value="MTA" />
-					</Picker>
-						
-					<Picker style={styles.picker}
-						selectedValue={this.state.entity}
-						onValueChange={(itemValue, itemIndex) => this.setState({entity: itemValue})}>
-						<Picker.Item label="Student" value="Student" />
-						<Picker.Item label="Lecturer" value="Lecturer" />
-					</Picker>
-						
-					<TouchableOpacity onPress={this.onSubmit.bind(this)} style={styles.opacity} >
-						<Icon name='check' size={25} color='black' style={styles.iconButton}/>
-						<Text style={styles.textLogin}> Submit </Text>
-					</TouchableOpacity>
-				
-				
+						<Picker style={styles.picker}
+							selectedValue={this.state.college}
+							onValueChange={(itemValue, itemIndex) => this.setState({ college: itemValue })}>
+							<Picker.Item label="MTA - Academic Tel Aviv college" value="MTA" />
+						</Picker>
+
+						<Picker style={styles.picker}
+							selectedValue={this.state.entity}
+							onValueChange={(itemValue, itemIndex) => this.setState({ entity: itemValue })}>
+							<Picker.Item label="Student" value="Student" />
+							<Picker.Item label="Lecturer" value="Lecturer" />
+						</Picker>
+
+						<TouchableOpacity onPress={this.onSubmit.bind(this)} style={styles.opacity} >
+							<Icon name='check' size={25} color='black' style={styles.iconButton} />
+							<Text style={styles.textLogin}> Submit </Text>
+						</TouchableOpacity>
+
+
 					</View>
-			</ScrollView>
-		</ImageBackground>
-    );
-  }
+				</ScrollView>
+			</ImageBackground>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    
-  },
-  logo: {
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+
+	},
+	logo: {
 		width: 200,
 		height: 180,
 		alignSelf: 'center',
 		resizeMode: 'center',
 		marginTop: -30,
-   },
-    opacity: {
-	    flex: 1,
+	},
+	opacity: {
+		flex: 1,
 		backgroundColor: 'rgba(59,89,152,0.6)',
-		
+
 		marginTop: 10,
 		height: 40,
 		width: '50%',
@@ -147,35 +147,35 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		paddingTop: 5,
-  },
-   greetings: {
+	},
+	greetings: {
 		alignSelf: 'flex-start',
 		marginTop: 20,
 		marginLeft: 23,
 		color: 'black'
-  },
-  textLogin: {
-	fontSize: 18,
-	 
-  },
-  picker: {
-	  width: 150,
-  },
-  textLogout: {
-	fontSize: 14,
-	marginLeft: 5,
-	color: 'black',
-},
- logoutOpacity: {
-	alignSelf: 'flex-start',
-	marginTop: 5,
-	height: 30,
-	width: 80,
-	borderRadius: 10,
-	marginLeft: 15,
-	flex: 1,
-	flexDirection: 'row',
-	justifyContent: 'center',
-	paddingTop: 5,
-},
+	},
+	textLogin: {
+		fontSize: 18,
+
+	},
+	picker: {
+		width: 150,
+	},
+	textLogout: {
+		fontSize: 14,
+		marginLeft: 5,
+		color: 'black',
+	},
+	logoutOpacity: {
+		alignSelf: 'flex-start',
+		marginTop: 5,
+		height: 30,
+		width: 80,
+		borderRadius: 10,
+		marginLeft: 15,
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingTop: 5,
+	},
 });

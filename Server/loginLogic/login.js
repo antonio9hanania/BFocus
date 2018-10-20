@@ -234,7 +234,7 @@ function removeDeviceToken(id, req, userDataCollection, resHttp) {
     return new Promise(function(resolve, reject) {
         var result = {"message" : ''};
 
-        userDataCollection.findByIdAndUpdate(id, {deviceToken: undefined }, function (err, doc) {
+        userDataCollection.findByIdAndUpdate(id, {deviceToken: undefined, status: false }, function (err, doc) { //remove the deviceToken and update status to false of logouted user
             if(err) {
                 resHttp.status(400);
                 result.message = "An error occurred: " + err;

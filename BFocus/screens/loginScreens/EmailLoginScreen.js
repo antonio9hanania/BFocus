@@ -8,75 +8,65 @@ import Toast from 'react-native-simple-toast';
 export default class EmailLoginScreen extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       username: '',
       email: '',
       password: '',
       errorMessageEmail: '',
-			errorMessagePassword: '',
+      errorMessagePassword: '',
     };
 
-  }
-  
-  componentDidMount() {
-    //loginToServerWithPassword("zz@xx.yy", "1234", this.handleResponse); //Lecturer1
-    //loginToServerWithPassword("aa@bb.cc", "1234", this.handleResponse); //Lecturer2
-
-    //loginToServerWithPassword("tt@yy.uu", "1234", this.handleResponse); //Student1
-    //loginToServerWithPassword("ee@rr.tt", "1234", this.handleResponse); //Student2
-    //loginToServerWithPassword("oo@pp.ll", "1234", this.handleResponse); //Student3
-    //loginToServerWithPassword("pp@pp.pp", "1234", this.handleResponse); //Student3
   }
 
   componentWillUnmount() {
     console.log(">>>>Login email UNmounted");
   }
-  
-  handleResponse = ((status, responseJson) =>{
+
+  handleResponse = ((status, responseJson) => {
     console.log("Got to response handler.");
     var messagetoPresentToUser;
 
-    if(status >= 400) {
+    if (status >= 400) {
       messagetoPresentToUser = responseJson.message;
-      if(status === 401) {
+      if (status === 401) {
         this.setState({ errorMessageEmail: messagetoPresentToUser });
       }
       else {
         this.setState({ errorMessagePassword: messagetoPresentToUser });
       }
     }
-    else if( status === 200) {
-       navigateAfterSuccessfullLogin(responseJson);
-    }   
+    else if (status === 200) {
+      navigateAfterSuccessfullLogin(responseJson);
+    }
   });
 
 
   onLogin() {
-    const {  email, password  } = this.state;
+    const { email, password } = this.state;
     this.setState({ errorMessageEmail: '', errorMessagePassword: '' });
 
-  	loginToServerWithPassword(email, password, this.handleResponse);
+    loginToServerWithPassword(email, password, this.handleResponse);
   }
 
   render() {
     return (
-      <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
-      <ScrollView> 
+      <ImageBackground source={require('../../img/img_background_picture.png')} imageStyle={{ resizeMode: 'cover' }} style={{ flex: 1 }}>
+        <ScrollView>
           <View style={styles.container}>
-          <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')}/>
-            
-            <Icon name='mail' size={24} color='black' style={styles.iconInput}/>
+            <Image style={styles.logo} source={require('../../img/BFOCUS_LOGO.png')} />
+
+            <Icon name='mail' size={24} color='black' style={styles.iconInput} />
             <FormLabel labelStyle={styles.inputLabel}>Email</FormLabel>
             <FormInput
               value={this.state.email}
               onChangeText={(email) => this.setState({ email })}
               placeholder={'Enter your email here...'}
               placeholderTextColor="#000100"
-              inputStyle={styles.input}/>
+              inputStyle={styles.input} />
             <FormValidationMessage labelStyle={styles.errorMessage}> {this.state.errorMessageEmail} </FormValidationMessage>
 
-            <Icon name='lock' size={24} color='black' style={styles.iconInput}/>
+            <Icon name='lock' size={24} color='black' style={styles.iconInput} />
             <FormLabel labelStyle={styles.inputLabel}>Password</FormLabel>
             <FormInput
               value={this.state.password}
@@ -88,12 +78,12 @@ export default class EmailLoginScreen extends Component {
             <FormValidationMessage labelStyle={styles.errorMessage}> {this.state.errorMessagePassword} </FormValidationMessage>
 
             <TouchableOpacity style={styles.opacity} onPress={this.onLogin.bind(this)}>
-              <Icon name='check' size={25} color='black' style={styles.iconLogin}/>
+              <Icon name='check' size={25} color='black' style={styles.iconLogin} />
               <Text style={styles.text}> Login </Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.opacity} onPress={()=> this.props.navigation.navigate('EmailSignup')}>
-              <Icon name='add-user' size={24} color='black' style={styles.iconButton}/>
+
+            <TouchableOpacity style={styles.opacity} onPress={() => this.props.navigation.navigate('EmailSignup')}>
+              <Icon name='add-user' size={24} color='black' style={styles.iconButton} />
               <Text style={styles.text1}> Don't have an account? Sign up! </Text>
             </TouchableOpacity>
 
@@ -107,21 +97,21 @@ export default class EmailLoginScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
     justifyContent: 'center',
 
   },
   logo: {
-		width: 200,
-		height: 180,
-		alignSelf: 'center',
-		resizeMode: 'center',
-		marginTop: -40,
-   },
+    width: 200,
+    height: 180,
+    alignSelf: 'center',
+    resizeMode: 'center',
+    marginTop: -40,
+  },
   text: {
     fontSize: 18,
     textAlign: 'center'
-    
+
   },
   text1: {
     fontSize: 16,
@@ -139,7 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 5,
-   },
+  },
   inputLabel: {
     marginTop: -20,
     marginLeft: 50,
@@ -147,16 +137,16 @@ const styles = StyleSheet.create({
   },
   input: {
     color: "black",
-   
-  },
-  
-   iconLogin: {
 
-   },
-   iconInput: {
-      marginLeft: 20,
-   },
-   errorMessage: {
+  },
+
+  iconLogin: {
+
+  },
+  iconInput: {
+    marginLeft: 20,
+  },
+  errorMessage: {
     marginTop: -3,
-   }
+  }
 });

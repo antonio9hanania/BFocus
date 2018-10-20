@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Alert, ImageBackground, AsyncStorage, View, Linking, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { AreaChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Text } from 'react-native-elements';
-import { Path } from 'react-native-svg';
-import * as shape from 'd3-shape';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import { SERVER_ADDR } from '../../constants/serverAddress';
 import PTRView from 'react-native-pull-to-refresh';
 import Toast from 'react-native-simple-toast';
 import { showAlert } from '../../components/alert';
+import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryAxis } from "victory-native";
+
 
 export default class CourseGroupChartScreen extends Component {
     constructor(props) {
@@ -20,7 +19,6 @@ export default class CourseGroupChartScreen extends Component {
             id: '',
             groupName: '',
             graphTextDescirption: '',
-            studentsActivityPercentage: [],
             startTime: '',
             endTime: '',
             dayInWeek: '',
@@ -28,13 +26,17 @@ export default class CourseGroupChartScreen extends Component {
             studentsOverallStats: [],
             tableHead: ['#', 'Name', '%', 'Score'],
             tableTitle: [],
+            zoomDomain: {},
+            studentsActivityPercentage: [],
         };
 
         this.getLessonsData = this.getLessonsData.bind(this);
         this.responseHandler = this.responseHandler.bind(this);
+        this.convertToObjectDate = this.convertToObjectDate.bind(this);
+
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         try {
             console.log("Query or survey did mount");
             const item = await this.props.navigation.getParam('item');
@@ -53,6 +55,7 @@ export default class CourseGroupChartScreen extends Component {
         catch (error) {
             console.log("An error occured: " + error);
         }
+
     }
 
     buildArrayOfIndex(arraylength) {
@@ -83,27 +86,50 @@ export default class CourseGroupChartScreen extends Component {
             var lesson = responseJson.currOrNextLesson;
             var graphTextDescirption = responseJson.isLessonInCurrentDay === true ? "Students activity during today's lesson:" : "Next lesson will be:";
             var dayInWeek = this.getDayInWeekFromNumber(lesson.dayInWeek);
-
+            var dateBuilder = new Date().toLocaleDateString();
+            var currentTimeStudentsActivityPercentage = this.convertToObjectDate(lesson.studentsActivityPercentage);
             this.setState({
-                studentsActivityPercentage: lesson.studentsActivityPercentage,
+                studentsActivityPercentage: currentTimeStudentsActivityPercentage,
                 startTime: lesson.dates[0],
                 endTime: lesson.dates[lesson.dates.length - 1],
                 lessonTimePeriod: lesson.dates,
                 studentsOverallStats: responseJson.studentsOverallStats,
                 graphTextDescirption: graphTextDescirption,
                 dayInWeek: dayInWeek,
+                zoomDomain: (lesson.dates.length > 1) ? { x: [new Date(dateBuilder + ',' + lesson.dates[0]), new Date(dateBuilder + ',' + lesson.dates[lesson.dates.length - 1])], y: [0, 100] } : {},
             });
 
-           // console.log("Updated lessonsData: " + JSON.stringify(this.state.lessonsData)); //////////////undifined
+            console.log("lesson.studentsActivityPercentage[0].utcDateOfActivity: ", lesson.studentsActivityPercentage[0])
+            console.log("Updated lessonsData: " + JSON.stringify(this.state.lessonsData)); //////////////undifined
         }
     }
 
     onRefresh = () => {
         return new Promise((resolve) => {
             Toast.show('Refreshing...', Toast.SHORT);
-            this.getLessonsData(this.state.groupPositionIndex,this.state.id);
+            this.getLessonsData(this.state.groupPositionIndex, this.state.id);
             setTimeout(() => { resolve(); }, 2200)
         });
+    }
+    convertToObjectDate(precentagePerTimeArr) {
+        var i;
+        var res = [];
+
+        if (precentagePerTimeArr.length > 1) {
+
+            for (i in precentagePerTimeArr) {
+                res.push({ localDateOfActivity: new Date(precentagePerTimeArr[i].utcDateOfActivity), studentsActivityPercentage: precentagePerTimeArr[i].studentsActivityPercentage });
+            }
+            return res;
+        }
+        else {
+            return precentagePerTimeArr;
+        }
+
+    }
+
+    handleZoom(domain) {
+        this.setState({ zoomDomain: domain });
     }
 
     getLessonsData(groupPositionIndex, id) {
@@ -138,13 +164,14 @@ export default class CourseGroupChartScreen extends Component {
 
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
-              Linking.openURL(url);
+                Linking.openURL(url);
             } else {
-              console.log("Don't know how to open URI: " + this.state.url);
+                console.log("Don't know how to open URI: " + this.state.url);
             }
-          });
+        });
     }
-    
+
+
     downloadExcellFile = () => {
         var reqerId = this.state.id;
         showAlert("Download table", "You will download the Students Analysis table to your device, are you sure?", () => {
@@ -152,8 +179,8 @@ export default class CourseGroupChartScreen extends Component {
             url = SERVER_ADDR + "ExportToExcelFile?";
             console.log("tableHead: ", this.state.tableHead);
             data = { data: this.state.studentsOverallStats, headerData: this.state.tableHead };
-  
-            fetch(url , {
+
+            fetch(url, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     "Content-Type": "application/json",
@@ -168,7 +195,7 @@ export default class CourseGroupChartScreen extends Component {
                 .then((responseJson) => {
                     console.log("Response from server: " + status);
                     console.log(responseJson);
-                    if(status === 200) {
+                    if (status === 200) {
                         this.downloadFromNewWindow(responseJson.filePath);
                     }
                 })
@@ -181,26 +208,13 @@ export default class CourseGroupChartScreen extends Component {
     render() {
 
         data = this.state.studentsActivityPercentage;
-        xDataTimes = this.state.lessonTimePeriod;
-        const xAxisHeight = 0;
-        const axesSvg = { fontSize: 10, fill: 'black' };
-        const verticalContentInset = { top: 10, bottom: 10 };
-
-        const Line = ({ line }) => (
-            <Path
-                key={'line'}
-                d={line}
-                stroke={'rgb(134, 65, 244)'}
-                fill={'none'}
-            />
-        )
 
         const arrSizeOfTable = [3, 9, 6, 6];
         const arrWidthTable = [40, 90, 60, 60];
 
         return (
-            <ImageBackground source={require('../../img/img_background_picture.png')}  imageStyle={{resizeMode: 'cover'}} style={{flex:1}}>
-            <PTRView onRefresh={this.onRefresh.bind(this)} >
+            <ImageBackground source={require('../../img/img_background_picture.png')} imageStyle={{ resizeMode: 'cover' }} style={{ flex: 1 }}>
+                <PTRView onRefresh={this.onRefresh.bind(this)} >
 
                     <ScrollView resizeMode="center">
                         <View style={styles.container}>
@@ -227,51 +241,40 @@ export default class CourseGroupChartScreen extends Component {
                             <Text style={styles.header}> {this.state.groupName} </Text>
                             <Text style={styles.header}> {this.state.dayInWeek} {this.state.startTime}-{this.state.endTime}</Text>
 
-                            {this.state.studentsActivityPercentage && this.state.studentsActivityPercentage.length > 0 ?
+                            {this.state.studentsActivityPercentage && this.state.studentsActivityPercentage.length > 1 ?
                                 <View style={styles.graphContainer}>
-                                    <YAxis
-                                        data={data}
-                                        style={{ marginBottom: xAxisHeight, }}
-                                        contentInset={verticalContentInset}
-                                        svg={axesSvg}
-                                    />
-                                    <View style={{ flex: 1, marginLeft: 3, }}>
-                                    
-                                        <AreaChart
-                                            style={styles.chart}
-                                            data={data}
-                                            contentInset={{ top: 30, bottom: 30 }}
-                                            curve={shape.curveNatural}
-                                            svg={{ fill: 'rgba(134, 65, 244, 0.2)' }}
-                                        >
-                                            <Grid />
-                                            <Line />
-                                        </AreaChart>
+                                    <VictoryChart scale={{ x: "time", y: "linear" }}
+                                        containerComponent={
+                                            <VictoryZoomContainer
+                                                zoomDimension="x"
+                                                zoomDomain={this.state.zoomDomain}
+                                                onZoomDomainChange={this.handleZoom.bind(this)}
+                                            />
+                                        }
+                                    >
+                                        {/* <VictoryAxis // converting a 12h time to 24h at x axis
+                                            tickFormat={(x) => new Date(x).toTimeString().substring(0,2) + ':' + new Date(x).toTimeString().substring(3,5)}
+                                        />
 
+                                        <VictoryAxis dependentAxis tickFormat={(tick) => tick + '%'} // display also the y axis with % appended to the value
+                                        /> */}
+                                        <VictoryLine
+                                            style={{
+                                                data: { stroke: "tomato" }
+                                            }}
+                                            data={this.state.studentsActivityPercentage}
+                                            x="localDateOfActivity"
+                                            y="studentsActivityPercentage"
+                                        />
+                                    </VictoryChart>
 
-                                        <View style={styles.containerDates}>
-                                            {this.state.lessonTimePeriod.map((value, index) => {
-                                                return (
-                                                    <Text key={index} style={styles.dateStyle}>
-                                                        {value}
-                                                    </Text>
-                                                );
-                                            })
-                                            }
-                                        </View>
-
-
-                                        <Text> {'\n\n'} </Text>
-
-                                    </View>
-                                    <Text> {'\n\n'} </Text>
                                 </View>
 
                                 :
                                 <Text style={styles.textNoData} > There isn't data to show </Text>
                             }
 
-                                <Text> {'\n\n\n\n'} </Text>
+                            <Text> {'\n\n\n\n'} </Text>
                         </View>
                     </ScrollView>
                 </PTRView>
@@ -294,7 +297,7 @@ const styles = StyleSheet.create({
         padding: 8,
         flexDirection: 'row',
         marginLeft: '7%',
-        
+
     },
     iconTable: {
         marginLeft: 5,

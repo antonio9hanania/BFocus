@@ -19,18 +19,12 @@ var message = {
     android: {
         ttl: 3600 * 1000, // 1 hour in milliseconds
         priority: 'high',
-            //  notification: {
-            //    title: 'lecture submision',
-            //    body: 'New query published',
-            //    //icon:  require('./ic_launcher'),
-            //    sound: "default", 
-            //  },
+ 
          data: {
              body : "New query published!",
              title : "New Update",
              sound : "default",
              toastForeground : "true",
-             //color: '#f45342',
          }
     },
     token : ''

@@ -59,13 +59,18 @@ var userSchema = new Schema({
     studentUsageDailyScores: [studentUsageDailyScoreSchema],
 });
 
+var precentagePerTime = new Schema({ 
+    utcDateOfActivity: {type: String},
+    studentsActivityPercentage: {type: Number}
+})
+
 var lessonSchema = new Schema({
     dates: [String],
     dayInWeek: { type: Number },
     lessonName: { type: String },
     lecturerName: { type: String },
     students: [ {type: Schema.Types.ObjectId, ref: 'allUsers'}],
-    studentsActivityPercentage: [Number], 
+    studentsActivityPercentage: [precentagePerTime] 
 });
 
 var studentOverallStatsSchema = new Schema({

@@ -64,15 +64,6 @@ export default class TimeTableUploadingScreen extends Component {
 		 console.log("error object is: " + error);
 		 console.log("res object is: " + res);
 		 
-		 /*for(var key in error) {
-			console.log(key + ": " + error[key]);
-			
-		  }
-		  
-		   for(var key in res) {
-			console.log(key + ": " + res[key]);
-			
-		  }*/
 		  
 		  if(res !== null) {	  
 			  // Android
